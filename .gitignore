@@ -1,0 +1,12 @@
+*.aux
+*.toc
+*.log
+*.glg
+*.glo
+*.gls
+*.glsdefs
+*.ist
+*.xdy
+*.listing
+*.out
+_minted-book/*

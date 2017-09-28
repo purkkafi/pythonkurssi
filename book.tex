@@ -1,0 +1,73 @@
+\documentclass[11pt,a4paper,titlepage]{report}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[finnish]{babel}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{enumerate}
+\usepackage{tabularx}
+\usepackage[toc]{glossaries}
+\usepackage{tcolorbox}
+\tcbuselibrary{minted}
+\tcbuselibrary{xparse}
+
+\title{Python-kurssin oppikirja (nimi työn alla)}
+\author{Mikko Tampio}
+
+\DeclareTCBListing{python}{ O{} }{
+	colback=red!5!white,
+	colframe=red!75!black,
+	listing only,
+	listing engine=minted,
+	minted language=python,
+	left=5mm,
+	minted options={fontsize=\small,breaklines,autogobble,linenos,numbersep=3mm}}
+
+\DeclareTCBListing[auto counter,number within=chapter]{example}{ s O{} m }{
+	colback=red!5!white,
+	colframe=red!75!black,
+	listing only,
+	fonttitle=\bfseries,
+	title=Esimerkki~\thetcbcounter: #3,
+	listing engine=minted,
+	minted language=python,
+	left=5mm,
+	minted options={fontsize=\small,breaklines,autogobble,linenos,numbersep=3mm}}
+
+\DeclareTCBListing{bash}{ O{} }{
+	colback=blue!5!white,
+	colframe=blue!75!black,
+	listing only,
+	listing engine=minted,
+	minted language=text,
+	left=5mm,
+	minted options={fontsize=\small,breaklines,autogobble,numbersep=3mm}}
+
+\DeclareTCBListing{output}{ O{} }{
+	colback=red!5!white,
+	colframe=red!75!black,
+	listing only,
+	listing engine=minted,
+	left=5mm,
+	minted options={fontsize=\small,breaklines,autogobble,numbersep=3mm}}
+
+\def\code#1{\texttt{#1}}
+
+\graphicspath{{images/}}
+
+\makeglossaries
+
+\include{glossary}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\include{chapters/chapter1}
+
+\printglossaries
+
+\end{document}
