@@ -124,22 +124,73 @@ Vaikka luvun ainut esimerkki onkin yksinkertainen, se täyttää Python-ohjelman
 
 Funktioihin ja merkkijonoihin palataan tulevissa luvuissa.
 
+\section{Useiden rivien tulostaminen}
+
+Edellisen osion lyhyt esimerkkiohjelma tulostaa Python-konsoliin yhden ainoan rivin tekstiä. Jos rivejä haluaa useampia, voi toimia monella tavalla; helpointa on yksinkertaisesti kirjoittaa monta \code{print}-lausetta, joista jokainen tulostaa oman rivinsä. Tässä havainnollistava esimerkki.
+
+\begin{python}
+print("Ensimmäinen rivi...")
+print("... ja toinen.")
+\end{python}
+
+Esimerkki tulostaa näytölle seuraavan tekstin:
+
+\begin{output}
+Ensimmäinen rivi...
+... ja toinen.
+\end{output}
+
+Muitakin tapoja on. Kenoviivaa (\code{\textbackslash}) voidaan käyttää \glslink{koodinvaihtomerkki}{koodinvaihtomerkkinä}, jolloin sen avulla voidaan kirjoittaa rivinvaihtomerkki (\code{\textbackslash n}). Rivinvaihtomerkin kohdatessaan Python jatkaa tekstiä uudelta riviltä, joten seuraavalla esimerkillä on tismalleen sama ulostulo.
+
+\begin{python}
+print("Ensimmäinen rivi...\n... ja toinen.")
+\end{python}
+
+Näin on tehtävä, koska Python ei salli merkkijonon jatkuvan seuraavalle riville. Tämä rajoitus kuitenkin poistuu, jos yhden lainausmerkin sijaan merkkijonon alussa ja lopussa käytetään kolmea.
+
+\begin{python}
+print("""Ensimmäinen rivi...
+... ja toinen.""")
+\end{python}
+
+\section{Kommentointi}
+
+Kommentit ovat hyödyllinen työkalu, jonka avulla koodiin voi jättää pieniä merkintöjä. Seuraava esimerkki havainnollistaa kommenttien eri käyttötarkoituksia; kommentti alkaa \code{\#}-merkistä ja jatkuu rivin loppuun saakka. Python-tulkki jättää huomiotta kaiken kommentissa olevan, joten kommenttien sisältö ei vaikuta mitenkään ohjelman toimintaan, mutta joitakin käyttötarkoituksia niillä siitä huolimatta on.
+
+\begin{example}{Kommennointi}
+# Koodannut Olli Ohjelmoija 4.10.2017
+# Erkki Esimerkki korjasi bugin 6.10.2017
+
+# Tulostaa tekstin "kissa"
+print("kissa")
+
+# print("koira")
+\end{example}
+
+Ensinnäkin kommenteilla voi jättää koodiin tietoja siitä, minkälaisia muutoksia eri henkilöt ovat siihen tehneet. Nykyisin tämä hoidetaan yleensä erillisellä \glslink{versiohallintaohjelma}{versiohallintaohjelmalla}, mutta aloittelijoiden ryhmätyössä voi olla kätevintä käyttää koodin alkuun sijoitettavia kommentteja.
+
+Tämän lisäksi kommenteilla voidaan selittää, mitä hankalat tai muuten epäselvät pätkät koodia tekevät. Aloittelija voi toki jättää itselleen esimerkin kaltaisia kommentteja, jotka edistyneemmälle ohjelmoijalle ovat täysin turhia, mutta yleensä kannattaa miettiä kriittisesti kommenttien tarpeellisuutta – tarpeettomat kommentit voivat lisätä koodin lukemisen hankaluutta. Hyvä nyrkkisääntö on, että kommenttien pitäisi kertoa, \textit{miksi} sen kirjoittanut ohjelmoija päätyi juuri valitsemaansa ratkaisuun; koodi voi puhua omasta puolestaan.
+
+Esimerkin kolmas kommentti näyttää, kuinka tietyn koodirivin voi nopeasti ottaa pois käytöstä muuttamalla sen kommentiksi. Todettakoon kuitenkin, että on huonoa tyyliä jättää koodiin sadoittain pois kommentoituja rivejä – kuten turhat ja itsestäänselvät kommentit, nekin saavat koodia lukevan henkilön kiinnittämään huomionsa itseensä. Jos kommentoituja koodirivejä projektiinsa kuitenkin jättää, on hyvätapaista kirjoittaa selventävä kommentti, joka selittää, miksi rivit on otettu pois käytöstä.
+
 \section{Tehtäviä}
 
 \begin{enumerate}[\thesection .1]
-\item Muuta esimerkkiohjelma tulostamaan oma nimesi.
-\item Muokkaa esimerkkiohjelmaa. Kokeile, mitä käy, jos...
+\item Muuta esimerkkiohjelma 1.1 tulostamaan oma nimesi.
+\item Muokkaa esimerkkiohjelmaa 1.1. Kokeile, mitä käy, jos...
 	\begin{enumerate}
 	\item ... viimeisen sulun poistaa
 	\item ... viimeisen lainausmerkin poistaa
 	\item ... lainausmerkkien sisällä ei ole mitään
 	\item ... \code{print}-funktion kirjoittaa väärin (vaikkapa \code{pirnt})
 	\end{enumerate}
-\item Tulosta useita rivejä tekstiä. Tee ohjelma, joka tulostaa
+\item Kokeile eri tapoja tulostaa useita rivejä tekstiä. Tee ainakin kaksi ohjelmaa, jotka tulostavat
 
 \begin{output}
 Hei maailma!
 Englanniksi se on Hello, World!
 \end{output}
+
+\item Mitä hyötyä kommenteista on, jos ne voisi poistaa, eikä ohjelma muuttuisi mitenkään?
 
 \end{enumerate}
