@@ -1,0 +1,186 @@
+\chapter{Muuttujat ja tietotyypit}
+
+\section{Muuttujien idea}
+
+Tähän asti olemme antaneet \code{print}-funktiolle suoraan merkkijonon. Sen lisäksi voimme käyttää aiemmin määriteltyä \glslink{muuttuja}{muuttujaa}.
+
+\begin{python}
+x = "Tulostettava teksti"
+print(x)
+\end{python}
+
+Ohjelman tuloste on
+
+\begin{output}
+Tulostettava teksti
+\end{output}
+
+Esimerkki havainnollistaa, että muuttuja viittaa sille aiemmin annettuun arvoon. Muuttuja määritellään \code{\textit{muuttuja} = \textit{arvo}}; kuten seuraava esimerkki näyttää, muuttuja voidaan myös määritellä uudelleen, jolloin se viittaa aina viimeiseksi määriteltyyn arvoonsa.
+
+\begin{example}{Muuttujan määrittely ja uudelleenmäärittely}
+var = "muuttujan arvo"
+print(var)
+var = "toinen arvo"
+print(var)
+\end{example}
+
+Tämä ohjelma tulostaa
+
+\begin{output}
+muuttujan arvo
+toinen arvo
+\end{output}
+
+Esimerkkien muuttujat olivat nimiltään \code{x} ja \code{var}. Muuttujilleen voi antaa nimeksi lähes mitä tahansa, mutta tärkeitä rajoituksia on kaksi.
+
+\begin{itemize}
+\item Muuttuja ei saa sisältää erikoismerkkejä, joita Python syntaksissaan käyttää. Esimerkiksi \code{muut(tuja} ja \code{muut"tuja} ovat virheellisiä muuttujia, joiden käyttämisestä on seurauksena syntaksivirhe.
+\item Muuttuja voi sisältää numeroita, mutta se ei saa alkaa sellaisella. \code{nimi4} on sallittu muuttuja, mutta \code{2kissaa} ei.
+\end{itemize}
+
+Tämän lisäksi on kiellettyä viitata sellaiseen muuttujaan, jota ei ole määritelty. Muuttujan voi joko määritellä itse (kuten esimerkeissä tehdään) tai saada valmiiksi Pythonilta.
+
+\section{Tekstinsyöttö}
+
+Muuttujien todellinen hyöty käy esille, kun täytyy käsitellä arvoja, jota ei tunneta ennen koodin suorittamista. Tällaisia ovat mm. tiedostojen sisältö, kellonaika, päivämäärä ja käyttäjän syöttämä teksti. Seuraava esimerkki havainnollistaa näistä viimeistä: käyttäjän nimeä kysytään \code{input}-funktiolla, minkä jälkeen se säilötään muuttujaan.
+
+\begin{example}{Tekstinsyöttö}
+nimi = input("Syötä nimesi: ")
+
+print("Hei, " + nimi + "!")
+\end{example}
+
+\code{input}-funktiolle annetaan merkkijono, joka näytetään käyttäjälle, joka voi sitten kirjoittaa Python-konsoliin haluamansa vastauksen. Esimerkin ulostulossa käyttäjä syöttää nimekseen \code{sari}, ja sitten ohjelma tulostaa tervehdyksen, jossa \code{nimi}-muuttuja on korvattu käyttäjän syöttämällä arvolla.
+
+\begin{output}
+Syötä nimesi: sari
+Hei, sari!
+\end{output}
+
+Toinen uusi asia esimerkissä on se, että merkkijonoja voi yhdistää \code{+}-merkillä. Esimerkiksi \code{"kis"+"sa"} on sama asia kuin \code{"kissa"}.
+
+\section{Tietotyypit}
+
+Tähän asti on selvitty pelkillä merkkijonoilla, mutta Pythonin muihkin \glslink{tyyppi}{tyyppeihin} on tarpeen tutustua. Tyyppiä voi ajatella joukkona arvoja, joilla on samanlaisia ominaisuuksia. Esimerkiksi kaikilla merkkijonoilla, kuten \code{"hevonen"} ja \code{"veropetos"}, on se ominaisuus, että niitä voi edellä opitun mukaan yhdistellä \code{+}-merkillä.
+
+Pythonin perustyyppeihin lukeutuvat merkkijono, totuusarvo ja numeeriset tyypit, joihin seuraavaksi tutustutaan. Totuusarvoja käsitellään ehtolauseiden yhteydessä. Tyyppejä on lisääkin, ja niitä voi jopa määritellä itse – lisää olio-ohjelmointia käsittelevässä luvussa.
+
+Eri tyyppisiä arvoja voi myös muuttaa toiseen tyyppiin. Tämä on tarpeen esimerkiksi silloin, kun haluamme käsitellä käyttäjän syötettä (\code{input}-funktio palauttaa aina merkkijonon) lukuna. Lisää aiheesta kokonaislukuosion esimerkissä.
+
+\section{Merkkijonot}
+
+On aika syventää tietämystä merkkijonoista. Syntaksi niiden määrittelyyn tunnetaan jo: lainausmerkkien sisällä oleva osa koodia tulkitaan merkkijonoksi. Tässä lisää tarpeellisia ominaisuuksia, joita tarvitaan merkkijonojen kanssa työskentelyssä.
+
+\begin{example}{Merkkijonojen ominaisuuksia}
+# Merkkijonojen yhdistäminen
+"a" + "b" # 'ab'
+
+# Merkkijonon pituuden selvittäminen
+len("kissa") # merkkijonon pituus eli 5
+
+# Merkkijonon toistaminen
+"ha" * 4 # 'hahahaha'
+
+# Isot ja pienet kirjaimet
+"isolla".upper() # 'ISOLLA'
+"PIENELLÄ".lower() # 'pienellä'
+
+# Merkkijonoksi muuttaminen
+# (6 on tässä kokonaisluku; lue seuraava osio)
+str(6) # merkkijono '6'
+\end{example}
+
+Esimerkkilausekkeita voi testata syöttämällä ne Python-konsoliin, joka laskee niiden arvon ja tulostaa sen. Tiedostossa työskennellessään on muistettava tulostaa haluamansa operaation tulos \code{print}-funktiolla.
+
+\section{Kokonaisluvut}
+
+Kokonaislukuja voi kaikessa yksinkertaisuudessaan määritellä vain kirjoittamansa halutun luvun: \code{36}. Lainausmerkkejä ei tule käyttää, koska muuten Python tulkitsee arvon merkkijonoksi. Monet funktiot, kuten äsken esitelty merkkijonon pituuden laskemiseen käytetty \code{len}, palauttavat kokonaisluvun.
+
+Useissa ohjelmointikielissä kokonaisluvuilla on määrätyt minimi- ja maksimiarvot, mutta Pythonissa kiinteitä rajoja ei ole. On teoreettisesti mahdollista luoda niin iso kokonaisluku, että tietokoneen muisti loppuu kesken, mutta käytännössä laskeminen käy sitä ennen niin hitaaksi, ettei Pythonin käyttö onnistu.
+
+\begin{example}{Kokonaislukujen ominaisuuksia}
+# Peruslaskutoimituksia
+4 + 6 # 7
+3 - 8 # -5
+2 * 3 # 6
+
+# Eri jakolaskut
+7 / 3 # 2.3333333333333335
+7 // 3 # 2
+
+# Potenssilasku
+13 ** 21 # 247064529073450392704413
+\end{example}
+
+Kuten esimerkki osoittaa, kokonaisluvuilla on samanlaisia laskutoimituksia kuin matematiikassa yleensä. Erilaisia jakolaskuoperaattoreita on kaksi: \code{/} tuottaa liukuluvun (katso seuraava osio) ja \code{//} kokonaisluvun. Kokonaislukujakolaskussa pyöristetään alaspäin; esimerkiksi \code{5//2} on \code{2}, ei \code{3}.
+
+Usein aloittelijoilta unohtuva asia on se, että arvoja täytyy muuttaa toiseen tyyppiin, jos niitä haluaa käsitellä eri tavalla. Käyttäjän syöte \code{input}-funktiolla on merkkijono; vain merkkijonoja voi yhdistää \code{+}-operaattorilla. Tämän vuoksi seuraavassa esimerkissä muutamme ensin käyttäjän syötteen kokonaisluvuksi ja sitten jälleen merkkijonoksi, kun haluamme yhdistää sen toiseen merkkijonoon.
+
+\begin{example}{Käyttäjän iän kysyminen}
+luku = int(input("Syötä ikäsi: "))
+
+print("Vuoden päästä olet " + str(luku+1) + " vuotta vanha.")
+\end{example}
+
+Tässä ohjelman ulostulo, kun käyttäjä syöttää iäkseen 19.
+
+\begin{output}
+Syötä ikäsi: 19
+Vuoden päästä olet 20 vuotta vanha.
+\end{output}
+
+Ensimmäisellä rivillä kysytään käyttäjän ikää, joka muutetaan kokonaisluvuksi \code{int}-funktiolla, koska sitä halutaan pian käsitellä aritmeettisesti. Laskutoimituksen \code{luku+1} tulos on kokonaisluku, joten se on muutettava merkkijonoksi \code{str}-funktiolla, jotta sen voi yhdistää muihin merkkijonoihin.
+
+\section{Liukuluvut}
+
+\glslink{liukuluku}{Liukuluvut} ovat ohjelmoinnissa desimaalilukujen vastine. Niiden käyttö on muuten samanlaista kuin kokonaislukujen, mutta kokonaislukuosa ja desimaaliosa erotetaan pisteellä (ei pilkulla, kuten suomen kielessä yleensä). \code{float}-funktiolla voi muuttaa merkkijonoja ja kokonaislukuja liukuluvuiksi.
+
+\begin{example}{Liukulukulaskuri}
+luku = float(input("Syötä liukuluku: "))
+
+print("4.6 * " + str(luku) + " = " + str(4.6 * luku))
+\end{example}
+
+Kun käyttäjä syöttää \code{7.8}, ohjelman ulostulo on seuraava:
+
+\begin{output}
+Syötä liukuluku: 7.8
+4.6 * 7.8 = 35.879999999999995
+\end{output}
+
+Tarkkaavainen lukija saattaa huomata, että laskun tulos on epätarkka. Liukulukujen ominaisuuksiin palataan matemaattista laskentaa käsittelevässä luvussa.
+
+\section{Tehtäviä}
+
+\begin{enumerate}[\thesection .1]
+
+\item Tee ohjelma, joka kysyy käyttäjältä nimeä ja tulostaa lyhyen tarinan, jossa päähenkilön nimi on korvattu annetulla nimellä.
+
+\item Mitkä seuraavista muuttujista ovat sallittuja? Jos et tiedä, kokeile Python-tulkissa ja perustele, miksi asia on näin.
+
+\begin{enumerate}
+\item \code{muut63}
+\item \code{Kokonaisluku}
+\item \code{5kulmio}
+\item \code{kissan\_nimi}
+\item \code{luku(käyttäjänikä)}
+\end{enumerate}
+
+\item Tee ohjelma, joka kysyy käyttäjältä merkkijonoa ja tulostaa sen pituuden.
+
+\item Tee ohjelma, joka kysyy käyttäjän nimeä ja ikää ja tulostaa ne muodossa \code{Hei, \textit{[nimi]}, \textit{[ikä]} vuotta!}
+
+\item Katso jotakin esimerkeistä, jossa arvoja muutetaan toiseen tyyppiin. Minkälaisen virheen saat, kun poistat funktiot, jolla muunnos tehdään? (kuten \code{str} tai \code{int})
+
+\item Tee ohjelma, joka kysyy käyttäjältä kahta lukua \code{a} ja \code{b} ja tulostaa laskutoimitukset \code{a+b}, \code{a-b}, \code{a*c} ja \code{a/b}.
+
+\item Kokeile, mitä seuraava ohjelma tekee:
+
+\begin{python}
+tulostus = print
+tulostus("Tulostetaan...")
+\end{python}
+
+Mitä tämä kertoo sinulle siitä, mitä \code{print} ja muut funktiot ylipäätään ovat?
+
+\end{enumerate}
