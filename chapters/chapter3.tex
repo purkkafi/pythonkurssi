@@ -1,0 +1,166 @@
+\chapter{Ehtolauseet}
+
+\section{\code{if}-lause yksinkertaisimmillaan}
+
+Tähänastiset ohjelmamme ovat edenneet täysin suoraviivaisesti: Python-tulkki työskentelee rivi kerrallaan, kunnes saapuu tiedoston loppuun. \code{if}-lauseiden avulla ohjelma voi tehdä valintoja ja toimia eri tavalla riippuen vaikkapa käyttäjän syötteestä, päivämäärästä tai mistä tahansa ehdosta.
+
+Seuraava esimerkki esittää ehtolauseen kaikista yksinkertaisimmillaan: yksi ainoa ehto, jonka täyttyessä tulostetaan tekstiä.
+
+\begin{python}
+salasana = input("Syötä salasana: ")
+
+if salasana == "correct horse battery staple":
+	print("Oikein!")
+\end{python}
+
+Ehtolause alkaa \code{if}-avainsanalla ja sen ehdolla. \code{==}-operaattori tarkastaa, ovatko sen oikea ja vasen puoli yhtäsuuret – lauseke \code{salasana == "..."} siis testaa, täsmääkö muuttuja \code{salasana} annettuun arvoon. Ehdon jälkeen seuraa kaksoispiste.
+
+\code{if}-lausetta kirjoittaja ohjelmoija haluaa, että ehdon ollessa tosi ohjelma suorittaa joitakin koodirivejä. Tämä onnistuu siten, että ne kirjoittaa kaksoispisteen jälkeen \glslink{sisennys}{sisennettynä} eli jonkin määrän välilyöntejä tai tabulaattoreita jälkeen. Esimerkissä \code{if}-lauseen sisällä on yksi ainoa lause, mutta niitä voi olla useitakin, kunhan kaikki on sisennetty tismalleen samalla tavalla.
+
+Tätäkin monimutkaisempia ehtolauseita voi rakentaa, mutta sitä ennen on tarpeen tutustua tarkemmin siihen, mitä ehdot oikeastaan ovat.
+
+\section{\code{bool}-tyyppi}
+
+Tarkemmin sanottuna \code{if}-lauseen ehtona on oltava lauseke, joka on tyypiltään totuusarvo eli \code{bool}. Totuusarvoja on kaksi: \code{True} eli tosi ja \code{False} eli epätosi.
+
+Aiemmin näimme \code{==}-operaattorin, joka palauttaa totuusarvon. \code{x == y} on \code{True}, jos \code{x} ja \code{y} ovat yhtä suuria, mutta \code{False}, jos ne eivät ole. Vertailla voi muillakin operaattoreilla; tässä ne taulukoituna.
+
+\begin{tabularx}{\textwidth}{ |X|X| }
+\hline
+\textbf{Operaattori} & \textbf{Merkitys} \\ \hline
+\code{x == y} & Palauttaa, ovatko \code{x} ja \code{y} yhtä suuria \\ \hline
+\code{x != y} & Palauttaa, ovatko \code{x} ja \code{y} eri suuria \\ \hline
+\code{x > y} & Palauttaa, onko \code{x} suurempi kuin \code{y} \\ \hline
+\code{x >= y} & Palauttaa, onko \code{x} suurempi tai yhtä suuri kuin \code{y} \\ \hline
+\code{x < y}  & Palauttaa, onko \code{x} pienempi kuin \code{y} \\ \hline
+\code{x <= y}  & Palauttaa, onko \code{x} pienempi tai yhtä suuri kuin \code{y} \\ \hline
+\end{tabularx}
+
+Neljä viimeistä vertaavat merkkijonoja aakkosjärjestyksessä; esimerkiksi \code{"z"} on suurempi kuin \code{"a"}.
+
+Vertailuoperaattorien avulla voi muodostaa yksinkertaisia ehtoja \code{if}-lauseisiin. Jos haluaa tarkistaa, onko käyttäjä täysi-ikäinen, voi kirjoittaa ehtolauseen \code{if ika >= 18: ...} Monimutkaisemmaksi kuitenkin menee. Jos on tarpeen tarkastaa useita ehtoja samaan aikaan, voi käyttää sisäkkäitä \code{if}-lauseita tällä tavoin:
+
+\begin{python}
+if ika >= 18:
+	if nimi == "Jussi":
+		...
+\end{python}
+
+Siistimpää on kuitenkin yhdistää ehdot. Jos \code{a} ja \code{b} ovat joitakin ehtolausekkeita, Python tarjoaa seuraavat operaattorit, joilla niistä voi muodostaa uusia ehtoja.
+
+\begin{tabularx}{\textwidth}{ |X|X| }
+\hline
+\textbf{Operaattori} & \textbf{Merkitys} \\ \hline
+\code{a and b} & Tosi vain silloin, jos sekä \code{a} että \code{b} ovat tosia \\ \hline
+\code{a or b} & Tosi, jos \code{a}, \code{b} tai molemmat ovat tosia \\ \hline
+\code{not a} & Tosi, jos \code{a} on epätosi \\ \hline
+\end{tabularx}
+
+Aiemmin esitetyn ehdon voi siis yhdistää \code{and}-operaattorilla.
+
+\begin{python}
+if ika >= 18 and nimi == "Jussi":
+	...
+\end{python}
+
+On hyvin mahdollista kirjoittaa sama ehto monella eri tavalla. Jos haluaa muodostaa ehdon, joka on tosi vain silloin, kun muuttuja \code{x} ei ole arvoltaan \code{7}, voi kirjoittaa esimerkiksi \code{x != 7} tai \code{not x == 7}. Sellaista muotoa kannattaa suosia, jota on helpoin ymmärtää – Python ei siitä välitä, kuinka monimutkaisia tai yksinkertaisia ehtoja kirjoittaa, mutta koodia lukevat muut ihmiset välittävät.
+
+\section{Monimutkaisempia \code{if}-lauseita}
+
+Aiemmin käsittelimme vain yksinkertaisimpia \code{if}-lauseita, joiden sisältämät lauseet joko suoritetaan tai ei suoriteta sen mukaan, onko ehto tosi vai ei. Entä jos haluammekin tehdä jotakin muuta siinä tapauksessa, että ehto on epätosi? Äsken näkemämme \code{not}-operaattorin avulla se on mahdollista.
+
+\begin{python}
+if luku == 7:
+	print("Luku on 7!")
+
+if not luku == 7:
+	print("Luku on jotain muuta!")
+\end{python}
+
+Itsensä toistaminen on kuitenkin pahasta. Ylläoleva ohjelma on varsinainen bugipesä – on helppoa kuvitella, että käy muokkaamassa toisen \code{if}-lauseen ehtoa, mutta unohtaakin muokata toista, minkä seurauksena jotakin odottamatonta tapahtuu. Onneksi asian voi tehdä siistimminkin.
+
+\begin{example}{\code{else}-haara}
+if luku == 7:
+	print("Luku on 7!")
+else:
+	print("Luku on jotain muuta!")
+\end{example}
+
+\code{if}-lauseeseensa voi esimerkin mukaisesti liittää \code{else}-haaran, joka suoritetaan silloin ja vain silloin, kun annettu ehto on epätosi.
+
+Sisennyksellä on väliä: \code{else}-avainsanan on oltava samalla sisennystasolla (siis sitä ennen on oltava sama määrä välilyöntejä) kuin sen \code{if}-lauseen, johon se liittyy. \code{else}-lohkoon liittyvien lauseiden täytyy olla sisennetty enemmän kuin itse avainsanan. Kaksoispiste \code{else}-avainsanan jälkeen on myös muistettava; Python hälyttää syntaksivirheestä, jos mikään \code{if}-lauseen anatomiassa on pielessä.
+
+Entä jos ei haluakaan suorittaa \code{else}-haaraa joka kerta? Voiko sillekin asettaa oman ehtonsa? Aina olisi mahdollista laittaa sisään toinen \code{if}-lause.
+
+\begin{python}
+if nimi == "Mari":
+	print("Hei Mari!")
+else:
+	if nimi == "Jasper":
+		print("Terve Jasper!")
+	else:
+		print("Tuntematon henkilö.")
+\end{python}
+
+Kuten arvata saattaa, siistimpi tapa on olemassa. \code{elif}-avainsanalla voi liittää \code{if}-lauseeseen lohkoja, jotka suoritetaan, jos jokin toinen ehto on tosi.
+
+\begin{example}{Palaute arvosanasta}
+arvosana = int(input("Syötä arvosanasi: "))
+
+if arvosana == 10:
+	print("Loistavasti tehty.")
+elif arvosana >= 8:
+	print("Hyvin tehty.")
+elif arvosana >= 5:
+	print("Kohtuullisen hyvin tehty.")
+elif arvosana == 4:
+	print("Et päässyt läpi.")
+else:
+	print("Outo arvosana.")
+\end{example}
+
+Huomaa, että \code{if}-lauseesta suoritetaan vain ensimmäinen haara, jonka ehto on tosi. Arvosana 9 täyttää kyllä ehdon \code{arvosana >= 5}, mutta koska se täyttää ensin esiintyvän ehdon \code{arvosana >= 8}, ohjelma tulostaa \code{Hyvin tehty.}
+
+Osaatko päätellä, mitä ohjelma tulostaa arvosanalla 6? Entä 4? Entä -2?
+
+\section{Tehtäviä}
+
+\begin{enumerate}[\thesection .1]
+
+\item Tee ohjelma, joka kysyy käyttäjältä salasanaa ja tulostaa joko \code{Oikein!} tai \code{Väärin!} siitä riippuen, oliko salasana oikea.
+
+\item Olkoon \code{a}, \code{b}, \code{c} ja \code{d} kokonaislukuja. Muodosta \code{if}-lauseet, jotka tarkastavat, ovatko seuraavat ehdot tosia.
+
+\begin{enumerate}
+\item \code{a} on suurempi kuin \code{b}
+\item \code{c} on pienempi tai yhtä suuri kuin \code{d}
+\item \code{a} ei ole yhtä suuri kuin \code{b}
+\item \code{a} on suurempi kuin \code{b} ja \code{c} on suurempi kuin \code{d}
+\item \code{a} on \code{7} tai \code{b} on \code{3}
+\end{enumerate}
+
+\item Tee ohjelma, joka kysyy kahta lukua ja kertoo, oliko ensimmäiseksi vai toiseksi syötetty suurempi.
+
+\item \textbf{Karkausvuositarkistin.} Ohjelmointitehtävien klassikko; tee ohjelma, joka kysyy käyttäjältä vuosilukua ja kertoo, onko se karkausvuosi vai ei. Karkausvuosia ovat sellaiset vuodet, jotka ovat neljällä jaollisia, mutta jos vuosi on myös jaollinen sadalla, se on karkausvuosi vain, jos se on jaollinen myös luvulla 400. Esimerkiksi 2014 ja 2400 ovat karkausvuosia, mutta 2007 ja 1900 eivät ole.
+
+Jaollisuutta voit tarkastella \code{\%}-operaattorilla, joka palauttaa jakojäännöksen; esimerkiksi \code{ 7 \% 3} on \code{1}. Jos \code{x}:llä jaettaessa jakojäännös on \code{0}, luku on jaollinen \code{x}:llä.
+
+\item Milloin seuraavat ehtolausekkeet ovat tosia? \code{x} ja \code{y} ovat kokonaislukuja.
+
+\begin{enumerate}
+\item \code{x < 10 or y < 10}
+\item \code{x > y and x != 8}
+\item \code{not x != 0 and x == 0} (kuinka voisit ilmaista tämän yksinkertaisemmin?)
+\end{enumerate}
+
+\item \textbf{Nelilaskuri.} Tee ohjelma, joka kysyy käyttäjältä kahta lukua ja laskutoimitusta ja tulostaa sitten laskun tuloksineen. Ohjelma voi toimia esimerkiksi näin:
+
+\begin{output}
+Syötä ensimmäinen luku: 4
+Syötä toinen luku: 5
+Syötä laskutoimitus (+, -, *, /): +
+
+4 + 5 = 9
+\end{output}
+
+\end{enumerate}
