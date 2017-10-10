@@ -1,0 +1,118 @@
+\chapter{Toisto}
+
+\section{Toisto \code{while}-silmukalla}
+
+Nyt esiteltävä \code{while}-lause muistuttaa hyvinkin paljon \code{if}-lausetta, joten lukijan kannattaa kerrata edellisen luvun ehtolauseita käsittelevää osiota, jos tarvetta siihen on. Itse asiassa \code{while}-lause on \glslink{syntaksi}{syntaksiltaan} lähes täydellinen \code{if}-lauseen kopio; ainut ero on se, että käytettävä avainsana on \code{while}, ei \code{if}. Samaan tapaan tarvitaan kaksoispiste ehdon jälkeen ja kasvava \gls{sisennys} sisälohkolle.
+
+Mitä eroja sitten on lauseiden \glslink{semantiikka}{semantiikassa}? Jos \code{if}-lause suorittaa sisältämänsä lauseet siitä riippuen, onko sen ehto tosi, \code{while}-lause toistaa niitä niin kauan. Esimerkki auttanee.
+
+\begin{example}{Lukujen iteroiminen \code{while}-silmukalla}
+x = 0
+while x < 10:
+	print(x)
+	x = x + 1
+\end{example}
+
+Esimerkin ehto \code{x < 10} on tosi, jos \code{x} on alle 10. Silmukan sisällä rivillä 4 \code{x}:n arvoa kasvatetaan yhdellä, joten lopulta ehdosta tulee epätosi, kun \code{x} saa arvon 10, ja silmukasta poistutaan. \code{x}:n arvo tulostetaan silmukan kierroksella, joten ulostulo näyttää tältä:
+
+\begin{output}
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+\end{output}
+
+Ehdoksi voi \code{while}-silmukalle antaa mitä tahansa. Yksi hyödyllinen erikoistapaus on ääretön silmukka, jonka avulla ohjelmansa toimintoa voi toistaa, kunnes käyttäjä sen sulkee. Sen voi muodostaa yksinkertaisesti antamalla \code{while}-lauseelle ehdoksi totuusarvon \code{True}.
+
+\begin{python}
+while True:
+	# varsinainen ohjelma
+\end{python}
+
+Ehto on aina tosi, joten ohjelma toistaa sisälohkoaan ikuisesti. On kuitenkin mahdollista myös poistua silmukasta \code{break}-avainsanan avulla.
+
+\begin{example}{\code{break}-avainsana}
+while True:
+	salasana = input("Syötä salasana: ")
+	if salasana == "kissa":
+		break
+
+print("Pääsit sisään.")
+\end{example}
+
+Kun käyttäjä syöttää oikean salasanan, kaikessa yksinkertaisuudessaan \code{break} poistuu silmukasta, jolloin koodin suoritus jatkuu eteenpäin ja ruudulle tulostuu teksti \code{Pääsit sisään!}.
+
+On hyvä huomata, että ohjelman voisi toteuttaa myös ilman \code{break}-ominaisuutta tarkistamalla \code{while}-silmukan ehdossa, milloin salasana on oikea. Periaatteessa \code{break} ei mahdollistakaan mitään uutta, mutta joissain tapauksissa sillä voi tulla siistimpää koodia. Omaa harkintaa kannattaa käyttää.
+
+\section{\code{for}-lause}
+
+Esimerkissä 4.1 nähtin yksi tapa käydä läpi kaikki tietyn lukuvälin luvut. Yksi siistin ja selkeän ohjelmoinnin säännöistä on se, että kuhunkin käyttötarkoitukseen käytetään siihen parhaiten sopivaa työkalua, ja sellainen lukuvälin läpikäymiseen löytyy: \code{for}-lause. Havainnollistamisen vuoksi tässä aiempi esimerkki toteutettuna \code{for}-silmukalla.
+
+\begin{example}{Lukujen iteroiminen \code{for}-silmukalla}
+for x in range(10):
+	print(x)
+\end{example}
+
+Koodirivien määrä puolittui – \code{for}:in käyttö selvästi kannattaa, mikäli välittää koodinsa siisteydestä. Sen toinen hyvä puoli on se, että kokeneelle Python-ohjelmoijalle \code{for} viestii välittömästi, mikä koodipätkän tarkoitus todennäköisesti on. \code{while}-lauseen käyttötarkoitukset ovat sen verran laajat, että koodia lukeva ei välttämättä heti ymmärrä, mikä on sen tarkoitus.
+
+Kuinka \code{for}-silmukat siis toimivat? \code{for}-avainsanan jälkeen tulee muuttuja, johon silmukan nykyinen arvo sijoitetaan joka iteraatiolla. Sitten seuraa \code{in}-avainsana ja jokin lauseke, jota käydään läpi. Tässä luvussa käytetään vain \code{range}-funktiota, mutta myöhemmin opitaan muitakin tapoja käydä läpi erinäisiä asioita.
+
+\code{range}-funktio palauttaa siis jonkin lukuvälin, jonka voi iteroida läpi \code{for}-lauseessa. Sitä voidaan käyttää useilla tavoilla.
+
+\begin{tabularx}{\textwidth}{ |X|X| }
+\hline
+\textbf{Käyttötapa} & \textbf{Merkitys} \\ \hline
+\code{range(x)} & Luvut välillä $[0, x-1]$ \\ \hline
+\code{range(a, b)} & Luvut välillä $[a, b-1]$ \\ \hline
+\code{range(a, b, c)} & Joka \code{c}:s luku väliltä $[a, b-1]$ \\ \hline
+\end{tabularx}
+
+Kaikissa tapauksissa lukualueen jälkimmäinen raja ei sisälly siihen, mutta ensimmäinen sisältyy. \code{range(3)} on luvut 0, 1, ja 2; \code{range(4, 7)} on luvut 4, 5, 6. Aivan viimeisimmän tavan käyttää \code{range}-funktiota \code{c}-parametri voi olla vaikeaselkoinen, mutta esimerkki voi auttaa.
+
+\begin{python}
+for i in range(0, 10, 3):
+	print(i)
+\end{python}
+
+Ohjelman ulostulo näyttää tältä:
+
+\begin{output}
+0
+3
+6
+9
+\end{output}
+
+\section{Tehtäviä}
+
+\begin{enumerate}[\thesection .1]
+
+\item Valitse jokin vanha tehtävä tai itse tekemäsi ohjelma, joka kysyy käyttäjältä syötettä ja tekee jotakin sen mukaisesti. Muokkaa ohjelma sellaiseksi, että se toistaa itseään ikuisesti \code{while}-silmukan avulla.
+
+\item Kirjoita seuraava ohjelma uudestaan käyttäen \code{while}-silmukkaa.
+
+\begin{python}
+for luku in range(0, 10, 2):
+	print(luku)
+\end{python}
+
+\item Kirjoita seuraava ohjelma tiiviimpään ja siistimpään muotoon \code{for}-silmukan avulla.
+
+\begin{python}
+luku = 0
+while luku < 20:
+	print("Luvun " + str(luku) + " neliö on " + str(luku * luku))
+	luku = luku + 1 
+\end{python}
+
+\item Tee ohjelma, joka kysyy käyttäjältä luvun ja toistaa niin monta kertaa viestin \code{Terve \textit{n}. kerran!}, missä \code{n} kasvaa joka iteraatiolla.
+
+\item Tee ohjelma, joka kysyy käyttäjältä luvun ja kertoo, monennella termillään summa $1^3 + 2^3 + 3^3 ...$ ylittää sen.
+
+\end{enumerate}
