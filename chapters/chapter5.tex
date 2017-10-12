@@ -1,0 +1,257 @@
+\chapter{Funktiot}
+
+\section{Funktiokutsu}
+
+\glslink{funktio}{Funktio} on monikäyttöinen työkalu. Sillä voi vähentää toistoa, selkeyttää koodia tai käyttää ominaisuuksia, joita Pythonissa ei muuten ole. Pian opimme määrittelemään omia funktioitamme, jotka toimivat aivan kuten Pythonissa valmiiksi määritellyt. Ensin on tarpeen syventää ja täsmällistää tietämystä siitä, kuinka funktioita käytetään -- siis millainen on \gls{funktiokutsu}.
+
+Tarkka syntaksi funktiokutsulle on tämä:
+
+\code{\textit{funktio}(\textit{arg1}, \textit{arg2}, ... , \textit{arg3})}
+
+Ensin on funktion nimi, sitten sulkujen sisällä lista argumenteista eli funktiolle annetuista arvoista pilkuilla erotettuna. Argumentteja on oltava sopiva määrä; riippuu funktiosta, minkälaisia yhdistelmiä se hyväksyy. Esimerkiksi hyvin tutulle \code{print}-funktiolle voi yhden merkkijonon lisäksi antaa minkä tahansa määrän mitä tahansa arvoja, ja se tulostaa ne välilyönneillä erotettuna.
+
+\begin{python}
+print(1)
+print(1, 2)
+print(1, 2, 3)
+\end{python}
+
+Ulostulo näyttää seuraavalta:
+
+\begin{output}
+1
+1 2
+1 2 3
+\end{output}
+
+Jos argumentteja antaa väärän määrän, seuraa syntaksivirhe. Esimerkiksi funktiokutsu \code{len("merkkijono", "toinen)} saa aikaan virheen \code{TypeError: len() takes exactly one argument (2 given)}.
+
+Funktiokutsun arvo on funktion paluuarvo; esimerkiksi lausekkeen \code{int("53")} arvo on \code{53}. Kaikilla funktioilla on paluuarvo, mutta jotkin -- kuten \code{print} -- palauttavat erityisen arvon \code{None}, jolloin sanomme, ettei paluuarvoa ole. Jos vaikkapa kirjoitamme \code{x = print("Hello World!")}, \code{x} saa arvon \code{None}. Tässä on enemmän järkeä, kun on oppinut määrittelemään omia funktioitaan.
+
+\section{Funktioiden määritteleminen}
+
+Otetaan esimerkiksi yksinkertainen funktio ja tutkitaan sen avulla funktioiden määrittelemisen syntaksia.
+
+\begin{example}{Identiteettifunktio}
+def identiteetti(argumentti):
+	return argumentti
+\end{example}
+
+Identiteettifunktio on matematiikassa ja tietojenkäsittelytieteessä usein käytetty funktio, joka palauttaa sille annetun argumentin. Kun funktio on määritelty, sitä voisi kutsua kirjoittamalla vaikkapa \code{identiteetti(5)}, jolloin funktiokutsun arvo olisi \code{5}, tai \code{identiteetti("aaa")}, jolloin arvo olisi \code{"aaa"}.
+
+Funktion määrittely alkaa \code{def}-avainsanalla. Sen jälkeen kirjoitetaan funktion nimi ja lista argumenteista suluissa. Jos haluamme useita argumentteja, ne erotetaan funktiokutsujen tavoin pilkulla. Lopuksi seuraa kaksoispiste.
+
+Tämän lisäksi jokaisella funktiolla on vartalo, joka on vaikkapa \code{if}-lauseiden tavoin sisennetty lohko. Funktion sisälle voi kirjoittaa lähes samaa koodia kuin ulkopuolellekin; yksi ero on se, että funktioiden sisällä voi käyttää \code{return}-avainsanaa, joka palauttaa halutun arvon funktiosta. Lisäksi aiemmin määritellyt argumentit asetetaan samannimisiin muuttujiin. Identiteettifunktio palauttaa ainoan argumenttinsa, joka on funktion määrittelyn mukaisesti muuttujassa \code{argumentti}.
+
+Monimutkaisempi esimerkki auttaa hahmottamaan, mitä funktiokutsussa tapahtuu. Tarkastellaan funktiota, joka ottaa kaksi argumenttia ja laskee ne yhteen.
+
+\begin{python}
+def laskeyhteen(a, b):
+	return a + b
+
+print(laskeyhteen(3, 7))
+print(laskeyhteen("a", "b"))
+\end{python}
+
+\begin{output}
+10
+ab
+\end{output}
+
+Funktio \code{laskeyhteen} ottaa kaksi argumenttia, joita sen sisällä merkitään \code{a} ja \code{b}. \code{return}-avainsanaa käyttäen se palauttaa paluuarvonaan \code{a + b}.
+
+Alempana \code{laskeyhteen}-funktiota kutsutaan arvoilla \code{3} ja \code{7}. Funktion sisällä muuttujaan \code{a} asetetaan siis arvo \code{3} ja muuttujaan \code{b} arvo \code{7}.
+
+Sitten funktiota kutsutaan toisen kerran, nyt arvoilla \code{"a"} ja \code{"b"}. Paluuarvon lauseke \code{a + b} muuttuu siis lausekkeeksi \code{"a" + "b"}, mikä on Pythonissa sallittua, ja funktio palauttaa \code{"ab"}. Nimestä voi päätellä, että ohjelmoija ei ehkä tarkoittanut, että funktiolle voitaisiin antaa merkkijonoja, mutta se kuitenkin toimii. Jos ohjelma ei toimi, voi olla hyväksi tarkastaa, antaako vahingossa jollekin funktiolle vääränlaisia argumentteja -- Pythonissa jo määritellyt funktiot, kuten \code{int} tai \code{range}, antavat yleensä selkeän virheviestin, mutta kuten esimerkki osoittaa, omiin funktioihin voi joskus päästä vahingossa vääränlaisia arvoja.
+
+\section{Sivuvaikutukselliset funktiot}
+
+Tähän mennessä käsitellyt funktioesimerkit ovat olleet yksinkertaisia ja jopa tarpeettomia. Kun muistaa, että funktion sisään saa kirjoittaa mitä koodia hyvänsä, on mahdollista tehdä hyödyllisempiä funktioita, joilla on \glslink{sivuvaikutus}{sivuvaikutuksia} -- ne siis tekevät muutakin kuin vain laskevat ja palauttavat paluuarvonsa. Jos vaikkapa huomaamme, että kysymme käyttäjältä lukua monta kertaa ohjelman aikana, koodia voi siisteyttää se, että tämä laitetaan omaan funktioonsa.
+
+\begin{example}{Kokonaisluvun kysyvä funktio}
+def kysyluku():
+	luku = int(input("Syötä kokonaisluku: "))
+	print("Hyväksytty.")
+	return luku
+
+a = kysyluku()
+b = kysyluku()
+c = kysyluku()
+print(a * b * c)
+\end{example}
+
+Ohjelma kysyy käyttäjältä kolme lukua ja tulostaa niiden tulon. Jos käyttäjä syöttää sallitun arvon (eikä esimerkiksi \code{kissa}), ohjelma tulostaa kohteliaasti \code{Hyväksytty}. Ulostulo voi näyttää vaikkapa tältä:
+
+\begin{output}
+Syötä kokonaisluku: 8
+Hyväksytty.
+Syötä kokonaisluku: 3
+Hyväksytty.
+Syötä kokonaisluku: 2
+Hyväksytty.
+48
+\end{output}
+
+Ohjelma on siistimpi ja helpommin ymmärrettävä kuin sellainen, jossa luvun kysyminen ja viestin tulostaminen olisi toistettu kolme kertaa. Tässä onkin yksi funktioiden tärkeä käyttötarkoitus: koodin siistiminen ja jakaminen osiin.
+
+Varsinkin sivuvaikutuksellisissa funktioissa emme aina halua palauttaa mitään arvoa. Tyhjä \code{return}-lause palaa funktiosta, kuten seuraava esimerkki näyttää.
+
+\begin{example}{Salasanankysyjäfunktio}
+def salasanasuojaus():
+        while True:
+                salasana = input("Syötä salasana: ")
+                if salasana == "correcthorse":
+			print("Oikein!")
+                        return
+		else
+			print("Yritä uudelleen.")
+
+salasanasuojaus()
+# Salaisuuksia
+
+\end{example}
+
+Kun \code{salasanasuojaus}-funktiota kutsutaan, käyttäjältä kysytään \code{while}-silmukan avulla toistuvasti salasanaa, kunnes oikea vaihtoehto syötetään. \code{return}-avainsana ilman mitään arvoa yksinkertaisesti poistuu funktiosta. Kuten esimerkki näyttää, \code{return}-lause voi sijaita missä tahansa funktion sisällä. Niitä voi kirjoittaa useammankin tai ei yhtään: jos \code{return} puuttuu, funktiosta poistutaan sitten, kun sisennetty alue sen sisällä päättyy.
+
+Kuten aiemmin ohimenevästi mainittiin, tällainenkin funktio, joka ei \code{return}-avainsanalla mitään palauta, palauttaa oikeasti erityisen \code{None}-arvon. Se ei ole erityisen jännittävä, mutta on yleissivistävänä seikkana hyvä tietää, miksi vaikkapa seuraava esimerkki
+
+\begin{python}
+x = print("Hei")
+print(x)
+\end{python}
+
+tulostaa tekstin \code{None}.
+
+\section{Oletusargumentit}
+
+Kuinka on mahdollista, että jotkin funktiot voivat ottaa vaihtelevan määrän argumentteja? Eräs tapa (joka ei tosin \code{print}-funktiota selitä) on käyttää oletusargumentteja eli argumentteja, joita funktiolle ei ole pakollista antaa, koska niillä on jo jokin oletusarvo. Esimerkiksi tutulle \code{int}-funktiolle voi halutessaan antaa toisen argumentin, joka kertoo, mitä lukujärjestelmää käytetään.
+
+\begin{python}
+print(int("10"))
+print(int("10", 2))
+\end{python}
+
+\begin{output}
+10
+2
+\end{output}
+
+Toisessa funktiokutsussa \code{int}-funktiolle syötetään arvo \code{2}, minkä seurauksena se tulkitsee merkkijonon \code{"10"} 2-järjestelmässä eli biäärijärjestelmässä. Oletuksena argumentin arvo on \code{10}, jolloin luku tulkitaan kymmenjärjestelmää käyttäen.
+
+Omiin funktioihinsa saa oletusargumentteja seuraavalla syntaksilla:
+
+\begin{example}{Oletusargumentti}
+def tervehdi(tervehdys="Päivää"):
+        nimi = input("Syötä nimesi: ")
+        print(tervehdys + ", " + nimi + "!")
+
+tervehdi()
+tervehdi("Hei")
+\end{example}
+
+Eli funktion määrittelyn kohdalla yksinkertaisesti kirjoittaa haluamansa argumentin kohdalle yhtäsuuruusmerkin ja oletusarvon. Ohjelma toimii esimerkkisyötteillä näin:
+
+\begin{output}
+Syötä nimesi: tuukka
+Päivää, tuukka!
+Syötä nimesi: taavi
+Hei, taavi!
+\end{output}
+
+\section{Näkyvyysalueet}
+
+Yleinen murheiden lähde funktioita käyttäessä on näkyvyysalueisiin liittyvä hämmennys. Aloitetaan esimerkillä: osaatko sanoa, mitä seuraava ohjelma tulostaa?
+
+\begin{python}
+def kokeilu1(a):
+        print(a)
+
+a = 8
+kokeilu1(3)
+print(a)
+\end{python}
+
+Tulos, joka ei missään nimessä ole ilmiselvä, on seuraava:
+
+\begin{output}
+3
+8
+\end{output}
+
+Kyse on näkyvyysalueista eli siitä, missä kohdissa koodia missäkin määritellyt muuttujat näkyvät.
+
+Miksi ensiksi tulostuu \code{3}? Vaikka ennen funktiokutsua määriteltiinkin \code{a = 8}, funktion sisällä \code{a}:n arvo on sille argumenttina annettu \code{3}. Miksi sen jälkeen tulostuu \code{8}? Vaikka funktion näkyvyysalueella \code{a}:n arvo onkin \code{3}, sillä ei ole enää mitään vaikutusta sen jälkeen, kun funktiosta on poistuttu.
+
+Samasta ilmiöstä on kyse seuraavassa esimerkissä.
+
+\begin{python}
+def kokeilu2():
+        b = 5
+
+kokeilu2()
+print(b)
+\end{python}
+
+Mitä ohjelma tulostaa? \code{5}? Ei mitään, koska tulee virhe, sillä \code{b}-muuttujaa ei ole määritelty. Lause \code{b = 5} vaikuttaa vain niin kauan, kun ollaan funktion sisällä; siispä \code{kokeilu2}-funktiolla ei ole mitään vaikutusta.
+
+Entä jos haluamme välttämättä muuttaa jonkin muuttujan arvoa funktion sisältä? Se onnistuu \code{global}-avainsanalla.
+
+\begin{python}
+def kokeilu3():
+        global b
+        b = 5
+
+kokeilu3()
+print(b)
+\end{python}
+
+Nyt tulostuu \code{5}, sillä \code{global}-avainsanalla määriteltiin, että \code{b} funktion sisällä viittaa ylemmän näkyvyysalueen muuttujaan. Siispä \code{b = 5} asetti \code{b}:n arvon siten, että se näkyi funktion ulkopuolellekin.
+
+Siistin koodin nimissä on hyvä muistaa, että selkeämpää on yksinkertaisesti palauttaa haluttu arvo funktiosta. On toki tilanteita, joissa \code{global}-avainsanan käyttäminen on siistein ratkaisu.
+
+\section{Rekursio}
+
+\glslink{rekursio}{Rekursio} on hankaluudestaan huolimatta äärimmäisen hyödyllinen työkalu. Rekursiivinen funktio on sellainen funktio, joka kutsuu itseään; tämän hyödyllisyys tulee ilmi parhaiten esimerkillä. Luvun kertoma lasketaan kertomalla keskenään luku itse ja kaikki luvut sen ja nollan välissä -- esimerkiksi $4! = 4 * 3 * 2 * 1 = 24$. Eräs rekursiivinen kertoman toteutus on esitetty alla.
+
+\begin{example}{Kertoma rekursiivisena funktiona}
+def kertoma(n):
+        if n == 1:
+                return 1
+        else:
+                return n * kertoma(n-1)
+
+luku = int(input("Syötä luku: "))
+print("Kertoma on " + str(kertoma(luku)))
+\end{example}
+
+\code{kertoma}-funktio kutsuu itseään \code{if}-lauseen toisessa haarassa siten, että sille annetusta argumentista vähennetään yksi. Jos ohjelma siis alkaisi vaikkapa funktiokutsulla \code{kertoma(5)}, tuossa kohtaa laskettaisiin \code{5 * kertoma(4)}, missä \code{kertoma(4)} laskee \code{4 * kertoma(3)} ja niin edelleen.
+
+On oleellista, että ehto \code{n == 1} tarkastetaan ja rekursio lopetetaan siinä tapauksessa, että näin on. Jos tarkastusta ei tee, funktio jatkaa kertoman laskemista \code{... * 2 * 1 * 0 * -1 * -2 * ...}, mikä paitsi on matemaattisesti väärin myös saa aikaan \code{RecursionError}-virheen, kun Pythonin rekursioraja ylittyy.
+
+Voidaan tietenkin kyseenalaistaa, onko rekursio siistein tapa toteuttaa kertoman laskeva funktio. \code{while}-silmukkaa käyttävä ratkaisu on varmasti nopeampi -- useimmissa ohjelmointikielissä rekursio on hitaampaa kuin iteraatio. On kuitenkin tapauksia, joissa rekursio on selvästi selkein ratkaisu, ja sitä varten sitä on hyvä ymmärtää.
+
+\section{Tehtäviä}
+
+\begin{enumerate}[\thesection .1]
+
+\item Tee funktio, joka ottaa argumenttinaan jonkin luvun $x$ ja palauttaa lausekkeen $x^2 + 1$ arvon.
+
+\item Seuraavan koodipätkän ohjelmoija on pilkkonut sovelluksensa ansiokkaasti osiin funktioiden avulla, mutta sitä suorittaessa tulee virhe. Mistä tämä johtuu? Korjaa mielestäsi siisteimmällä tavalla.
+
+\begin{python}
+def tervehdi():
+        nimi = "Jenni"
+        print("Hei, " + nimi + "!")
+
+def hyvastele():
+        print("Hyvästi, " + nimi + "!")
+
+tervehdi()
+hyvastele()
+\end{python}
+
+\item Edellisessä luvussa oli esimerkkinä ohjelma, joka käänsi käyttäjän syöttämän merkkijonon. Ohjelmoi funktio, joka tekee argumentilleen saman asian.
+
+\item Fibonaccin lukujono määritellään seuraavasti: ensimmäiset luvut ovat 1 ja 1, ja seuraavat saadaan kahden edellisen summasta. Lukujono alkaa siis 1, 1, 2, 3, 5, 8, ... Toteuta rekursiivinen funktio, joka laskee argumenttinsa \code{n} mukaan järjestyksessä \code{n}:nnen Fibonaccin luvun.
+
+\end{enumerate}

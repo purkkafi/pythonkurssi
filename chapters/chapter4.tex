@@ -61,7 +61,7 @@ for x in range(10):
 
 Koodirivien määrä puolittui – \code{for}:in käyttö selvästi kannattaa, mikäli välittää koodinsa siisteydestä. Sen toinen hyvä puoli on se, että kokeneelle Python-ohjelmoijalle \code{for} viestii välittömästi, mikä koodipätkän tarkoitus todennäköisesti on. \code{while}-lauseen käyttötarkoitukset ovat sen verran laajat, että koodia lukeva ei välttämättä heti ymmärrä, mikä on sen tarkoitus.
 
-Kuinka \code{for}-silmukat siis toimivat? \code{for}-avainsanan jälkeen tulee muuttuja, johon silmukan nykyinen arvo sijoitetaan joka iteraatiolla. Sitten seuraa \code{in}-avainsana ja jokin lauseke, jota käydään läpi. Tässä luvussa käytetään vain \code{range}-funktiota, mutta myöhemmin opitaan muitakin tapoja käydä läpi erinäisiä asioita.
+Kuinka \code{for}-silmukat siis toimivat? \code{for}-avainsanan jälkeen tulee muuttuja, johon silmukan nykyinen arvo sijoitetaan joka iteraatiolla. Sitten seuraa \code{in}-avainsana ja jokin lauseke, jota käydään läpi. Tässä luvussa näytetään muutamia esimerkkejä siitä, mitä voi käydä läpi \code{for}-silmukalla, ja lisää tulee myöhemmin tietorakenteista puhuttaessa.
 
 \code{range}-funktio palauttaa siis jonkin lukuvälin, jonka voi iteroida läpi \code{for}-lauseessa. Sitä voidaan käyttää useilla tavoilla.
 
@@ -89,6 +89,41 @@ Ohjelman ulostulo näyttää tältä:
 9
 \end{output}
 
+\section{Käänteisesti iteroiminen}
+
+Entä jos haluamme käydä läpi jonkin lukuvälin väärin päin? Matematiikkaa voi hyödyntää: kun vähentää nykyisen luvun maksimiarvosta, tulee iteroineeksi käänteisesti. Tätä varten on kuitenkin olemassa hyödyllinen \code{reversed}-funktio, jota käyttämällä tekee selvemmäksi sen, mitä koodi itse asiassa yrittää tehdä. Esimerkiksi seuraavanlainen esimerkki
+
+\begin{python}
+for i in reversed(range(5)):
+	print(i)
+\end{python}
+
+tulostaa
+
+\begin{output}
+4
+3
+2
+1
+0
+\end{output}
+
+\section{Merkkijonon iteroiminen}
+
+\code{for}-silmukassa voi käyttää \code{range}-funktion sijaan myös merkkijonoja, jolloin jokainen merkki käydään läpi. Tässä esimerkki, joka hyödyntää myös edellisessä osiossa esiteltyä \code{reversed}-funktiota.
+
+\begin{example}{Merkit takaperin}
+merkkijono = input("Syötä merkkijono: ")
+uusijono = ""
+
+for merkki in reversed(merkkijono):
+	uusijono = uusijono + merkki
+
+print(uusijono)
+\end{example}
+
+Jos käyttäjä syöttää \code{kissa}, tulostuu \code{assik}. Merkkijonon läpi iteroiminen on hyödyllistä silloin, kun haluaa tehdä merkkijonolle merkistä riippuvia operaatioita: poistaa kaikki a-kirjaimet, muuttaa joka toinen merkki isoksi kirjaimeksi, laskea vokaalit...
+
 \section{Tehtäviä}
 
 \begin{enumerate}[\thesection .1]
@@ -101,6 +136,8 @@ Ohjelman ulostulo näyttää tältä:
 for luku in range(0, 10, 2):
 	print(luku)
 \end{python}
+
+\item Tee ohjelma, joka laskee käyttäjän antaman merkkijonon vokaalien ja konsonanttien määrän.
 
 \item Kirjoita seuraava ohjelma tiiviimpään ja siistimpään muotoon \code{for}-silmukan avulla.
 
