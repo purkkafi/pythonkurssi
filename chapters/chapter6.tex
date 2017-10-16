@@ -1,0 +1,268 @@
+\chapter{Tietorakenteet}
+
+\section{Listat}
+
+Tähän asti edennyt Python-ohjelmoija osaa jo aika paljon, mutta tietämyksessä on yksi vakava aukko. Kun olemme halunneet kuvata jonkinlaista tietoa, olemme yksinkertaisesti määritelleet sille muuttujan. Mutta entä jos emme tiedä, kuinka monta arvoa haluamme käsitellä? Entä jos haluamme, että lukija saa syöttää mielivaltaisen määrän lukuja, joiden keskiarvo sitten lasketaan?
+
+Tähän on ratkaisu: listat. Lista on tietotyyppi, joka sisältää mielivaltaisen määrän muita arvoja (listan alkioita) -- siispä voimme määritellä muuttujan listaksi ja sitten käsitellä sitä. Lista määritellään seuraavalla syntaksilla:
+
+\begin{python}
+x = [1, 4, 2]
+\end{python}
+
+Muuttujaan \code{x} asetetaan lista, jossa on valmiina arvot 1, 4 ja 2. Tyhjää listaa voi merkitä \code{[]}.
+
+Kuinka listan arvoja voi muuttaa? Kirjoittamalla \code{lista[indeksi]} voi käsitellä listassa \code{lista} kohdassa \code{indeksi} olevaa arvoa tavallisena muuttujana. Numerointi aloitetaan nollasta: äskeisessä esimerkkilistassa \code{x[0]} on arvoltaan \code{1}, \code{x[1]} on \code{4} ja \code{x[2]} on 2.
+
+Toinen perusoperaatio listoille on se, että \code{for}-lauseella voi käydä niiden arvot läpi aivan kuten merkkijonon yksittäiset merkit tai lukualueen luvut. Seuraa havainnollistava esimerkki.
+
+\begin{example}{Listojen perusominaisuudet}
+lista = [1, 2, 3, 4]
+
+# Asetetaan toiseksi arvoksi 5
+lista[1] = 5
+
+# Tulostetaan jokainen alkio erikseen
+for luku in lista:
+	print(luku)
+
+# Tulostetaan vielä koko lista
+print(lista)
+\end{example}
+
+Ohjelman ulostulo on
+
+\begin{output}
+1
+5
+3
+4
+[1, 5, 3, 4]
+\end{output}
+
+Tärkeä huomio on, että listojen sisällä voi olla mitä tahansa. Esimerkiksi \code{["kissa", "koira", "jänis"]} on lista, jonka alkiot ovat merkkijonoja. Listoja voi jopa olla sisäkkäin: \code{[[1, 2], [3, 4]]}
+
+Aiemmin opittiin, että \code{for}-lauseella voi käydä \glslink{merkkijono}{merkkijonon} merkit läpi. Merkkijonot muistuttavat listoja myös siinä mielessä, että niidenkin yksittäisiä merkkejä voi tarkastella \code{[]}-syntaksilla: \code{"kissa"[0]} on merkkijonon ensimmäinen merkki \code{"k"}. 
+
+Äsken käsiteltiin vain murto-osa listojen hyödyllisistä ominaisuuksista. Jos muuttujassa \code{lista} on jokin lista, seuraava taulukko esittää, miten eri tavoin sitä voi muokata ja tutkia.
+
+\begin{tabularx}{\textwidth}{ |X|X| }
+\hline
+\textbf{Syntaksi} & \textbf{Merkitys} \\ \hline
+\code{lista.append(alkio)} & Lisää listaan uuden alkion \\ \hline
+\code{lista.clear()} & Poistaa kaikki alkiot listasta \\ \hline
+\code{lista.copy()} & Tekee listasta kopion, jota voi muokata ilman, että alkuperäinen lista muuttuu \\ \hline
+\code{lista.count(alkio)} & Laskee, kuinka monta tiettyä alkiota listassa on \\ \hline
+\code{lista.extend(toinen)} & Lisää listan perään kaikki toisen listan alkiot \\ \hline
+\code{lista.index(alkio)} & Palauttaa, missä indeksissä tietty alkio on \\ \hline
+\code{lista.insert(indeksi, alkio)} & Lisää listaan uuden alkion tiettyyn indeksiin \\ \hline
+\code{lista.pop()} & Poistaa ja palauttaa listan viimeisen arvon \\ \hline
+\code{lista.remove(alkio)} & Poistaa tietyn alkion listasta \\ \hline
+\code{lista.reverse()} & Kääntää listan toisin päin \\ \hline
+\code{lista.sort()} & Järjestää listan \\ \hline
+\code{len(lista)} & Listan pituus \\ \hline
+\end{tabularx}
+
+Listojen ominaisuuksia kannattaa opetella käyttämään tarpeen mukaan; jos jokin tuntuu hämärältä, aina voi itse kokeilla, mitä se tekee. Alla esimerkki, joka hyödyntää listojen ominaisuuksista kahta hyvin oleellista: \code{append()} ja \code{sort()}.
+
+\begin{example}{Lukujen järjestäjä}
+lista = []
+
+while True:
+	alkio = input("Syötä uusi luku tai paina enteriä lopettaaksesi: ")
+	if alkio == "":
+		break
+	else:
+		lista.append(int(alkio))
+
+lista.sort()
+
+for luku in lista:
+	print(luku)
+\end{example}
+
+Yksi ohjelman käyttökerta voi näyttää vaikkapa tältä:
+
+\begin{output}
+Syötä uusi luku tai paina enteriä lopettaaksesi: 5
+Syötä uusi luku tai paina enteriä lopettaaksesi: 2
+Syötä uusi luku tai paina enteriä lopettaaksesi: -6
+Syötä uusi luku tai paina enteriä lopettaaksesi: 1
+Syötä uusi luku tai paina enteriä lopettaaksesi: 
+-6
+1
+2
+5
+\end{output}
+
+Listojen lisäksi on hyvä kiinnittää huomiota ohjelman toimintatapaan: se kysyy toistuvasti syötettä, kunnes käyttäjä antaa jotain tiettyä (tyhjän merkkijonon) ja sitten siirtyy varsinaiseen datan käsittelyyn. Tämä on kätevä käytäntö, kun haluaa täyttää listan käyttäjältä pyydetyillä arvoilla.
+
+\section{Joukot}
+
+Pythonin joukot muistuttavat läheisesti matematiikan joukkoja: niiden alkioilla ei ole järjestystä, eikä samassa joukossa voi olla useaa identtistä alkiota. Jälkimmäinen on hyödyllinen ominaisuus, jos tarkoituksena on esimerkiksi luetella kaikki tekstissä olleet sanat -- joukko pitää automaattisesti huolen siitä, että jokainen sana listataan vain kerran.
+
+Joukoille ei ole omaa syntaksia, vaan ne täytyy luoda \code{set}-funktiolla, jolle annetaan joukoksi muutettava lista. Seuraava esimerkkiohjelma pitää listaa tapahtumaan osallistuvista henkilöistä siten, että saman nimen voi syöttää useita kertoja (voidaan ajatella, että ohjelmaa käyttää useampia henkilöitä, joilla kaikilla on oma, osittain päällekäinen osallistujalista syötettäväksi ohjelmaan).
+
+\begin{example}{Joukkoesimerkki}
+osallistujat = []
+
+while True:
+	osallistuja = input("Lisää osallistuja (tyhjä lopettaa): ")
+	if osallistuja == "":
+		break
+	else:
+		osallistujat.append(osallistuja)
+
+osallistujajoukko = set(osallistujat)
+
+for nimi in osallistujajoukko:
+	print(nimi)
+\end{example}
+
+Kuten esimerkki näyttää, joukon alkiot voi listojen tapaan käydä läpi \code{for}-lauseella. Koska joukoilla ei ole järjestystä, tietyn indeksin alkiota ei kuitenkaan voi tarkistaa: \code{joukko[indeksi]} on kiellettyä syntaksia.
+
+Joukoilla on iso joukko matematiikasta tuttuja ominaisuuksia, joihin ei tässä sen syvemmin paneuduta. Jos tuntee vaikkapa unionin ja osajoukon käsitteet, voi itse Googletella, kuinka ne Python-joukoilla toimivat.
+
+\section{Tuplet}
+
+Ainoa tuplejen oleellinen ero listoihin verrattuna on se, että ne ovat muuttumattomia -- tuplejen alkiot eivät voi muuttua sen jälkeen, kun ne on määritelty, joten tupleilta puuttuvat listojen alkioita muuttavat ominaisuudet. Tuplejen määrittelemiseen on oma syntaksinsa, joka hyödyntää sulkumerkkejä: \code{("kissa", "koira")} määrittelee tuplen, jonka alkiot ovat merkkijonot \code{"kissa"} ja \code{"koira"}.
+
+Koska tuplet ovat muuttumattomia, niiden yhdistämiseen on oma syntaksinsa. Listoilla saattoi käyttää \code{lista.append(toinen)}-metodia -- se ei tupleille kävisi, koska se muuttaisi alkuperäistä tuplea. Sen sijaan on mahdollista käyttää \code{+}-merkkiä.
+
+\begin{example}{Tuple-esimerkki}
+tuple1 = (1,2)
+tuple2 = (3,4)
+
+print("Tuplet yhdistettynä ovat: " + str(tuple1 + tuple2))
+\end{example}
+
+Esimerkki tulostaa
+
+\begin{output}
+Tuplet yhdistettynä ovat: (1, 2, 3, 4)
+\end{output}
+
+Samaa syntaksia voi käyttää listoillakin, mutta alkioiden lisääminen \code{append}-metodilla on nopeampaa, koska kokonaista uutta listaa ei tarvitse luoda.
+
+Käytännössä tuplet voisi aina korvata listoilla, mutta niilläkin on etunsa: muuttumattomuus viestii siitä, mitä ohjelmoija haluaa, ja estää vahingollisia virheitä. Jos siis tietää, ettei halua tietorakenteen muuttuvan, voi olla hyvä ajatus valita listojen sijasta tuplet.
+
+\section{Hajautustaulut}
+
+Viimeisenä tietorakenteena esitetään hajautustaulut, joiden idea saattaa vaatia tarkempaa selostusta. Mietitään ensin vaikkapa listaa \code{["maanantai", "tiistai", "keskiviikko", ...]}. Jokaista alkiota vastaa tietty indeksi: indeksissä \code{0} on merkkijono \code{"maanantai"}, indeksissä \code{1} on \code{"tiistai"} ja niin edelleen. Jos tiedämme indeksin, voimme saada sitä vastaavan arvon syntaksilla \code{\textit{lista}[\textit{indeksi}]}. Taulukoidaan mahdolliset indeksit ja niitä vastaavat alkiot.
+
+\begin{tabularx}{\textwidth}{ |X|X| }
+\hline
+\textbf{Indeksi} & \textbf{Alkio} \\ \hline
+\code{0} & \code{"maanantai"} \\ \hline
+\code{1} & \code{"tiistai"} \\ \hline
+\code{2} & \code{"keskiviikko"} \\ \hline
+\code{3} & \code{"torstai"} \\ \hline
+\code{4} & \code{"perjantai"} \\ \hline
+\code{5} & \code{"lauantai"} \\ \hline
+\code{6} & \code{"sunnuntai"} \\ \hline
+\end{tabularx}
+
+Voi ajatella, että \code{lista[3]} itse asiassa vain tarkoittaa alkiota, joka löytyy taulukon kohdasta, jossa indeksin arvo on \code{3}. Hajautustaulut toimivat samalla tavalla -- ainoa ero on se, että indekseinä voi olla mitä tahansa arvoja. Kuvitellaan vaikkapa hajautustaulu, johon on talletettu, mitä mieltä eri viikonpäivistä olemme.
+
+\begin{tabularx}{\textwidth}{ |X|X| }
+\hline
+\textbf{Indeksi} & \textbf{Alkio} \\ \hline
+\code{"maanantai"} & \code{"huono päivä"} \\ \hline
+\code{"tiistai"} & \code{"ihan ok"} \\ \hline
+\code{"keskiviikko"} & \code{"it's wednesday my dudes"} \\ \hline
+\code{"torstai"} & \code{"ihan ok"} \\ \hline
+\code{"perjantai"} & \code{"viikonloppu alkaa"} \\ \hline
+\code{"lauantai"} & \code{"viikonloppu"} \\ \hline
+\code{"sunnuntai"} & \code{"viikonloppu"} \\ \hline
+\end{tabularx}
+
+Kuten listoillakin, syntaksi \code{\textit{hajautustaulu}[\textit{indeksi}]} antaa tietyssä indeksissä olevan alkion. Jos ylläolevaa taulukkoa vastaava hajautustaulu olisi muuttujassa \code{taulu}, \code{taulu["tiistai"]} tarkoittaisi hajautustaulun arvoa \code{"ihan ok"}.
+
+Hajautustaulujen määritellään hieman aiemmin nähtyjä raskaammalla syntaksilla, mutta sen merkitys on selvä, kunhan muistaa, mitä hajautustaulut ovat -- tietorakenteita, jossa jokaista indeksiä vastaa alkio. Indeksi ja alkio erotetaan kaksoispisteellä, indeksi-alkio-parit toisistaan tarvittaessa pilkuilla; lopulta kokonaisuus ympäröidään aaltosuluilla \code{\{\}}.
+
+\begin{python}
+taulu = { 1 : "a", 2 : "b", 3 : "c" }
+\end{python}
+
+Esimerkin hajautustaulussa indeksissä \code{1} on arvo \code{"a"}, indeksissä \code{2} arvo \code{"b"} ja niin edelleen.
+
+Jos haluaa käydä läpi kaiken hajautustaulussa olevan, voi käyttää kolmea eri tapaa: \code{taulu.keys()}, joka käy läpi indeksit, \code{taulu.values()}, joka käy läpi arvot sekä \code{taulu.items()}, joka käy läpi indeksi-arvo-parit tupleina. Esimerkki selkeyttää.
+
+\begin{example}{Hajautustaulun iteroiminen}
+taulu = { "kissa": "en katt", "koira" : "en hund", "hevonen" : "en häst"}
+
+# Käy läpi indeksit
+print("Taulun indeksejä ovat:")
+for indeksi in taulu.keys():
+	print(indeksi)
+
+# Käy läpi alkiot
+print("Taulun alkioita ovat:")
+for alkio in taulu.values():
+	print(alkio)
+
+# Käy läpi indeksi-alkio-parit tupleina
+print("Taulukon indeksi-arvo-parit: ")
+for tuple in taulu.items():
+	print(tuple)
+\end{example}
+
+Ohjelman ulostulo on seuraava:
+
+\begin{output}
+Taulun indeksejä ovat:
+hevonen
+koira
+kissa
+Taulun alkioita ovat:
+en häst
+en hund
+en katt
+Taulukon indeksi-arvoparit: 
+('hevonen', 'en häst')
+('koira', 'en hund')
+('kissa', 'en katt')
+\end{output}
+
+\section{Tietorakenteiden vertailua}
+
+Oikean tietorakenteen valitseminen voi helpottaa ohjelmointia dramaattisesti, joten on hyväksi muodostaa itselleen yleismielikuva siitä, mihin eri tietorakenteita useimmiten käytetään. Alla taulukko, joka tiivistää luvun tietorakenteiden perusominaisuudet.
+
+\begin{tabularx}{\textwidth}{ |X|X|X|X| }
+\hline
+\textbf{Tietorakenne} & \textbf{Muuttuvuus} & \textbf{Järjestetty} & \textbf{Erityistä} \\ \hline
+Lista & Muuttuva & Kyllä & Voidaan järjestää \\ \hline
+Joukko & Muuttuva & Ei & Ei säilö useita identtisiä alkioita \\ \hline
+Tuple & Muuttumaton & Kyllä & Viestii muuttumattomuudellaan \\ \hline
+Hajautustaulu & Muuttuva & Ei & Indekseinä mielivaltaisia arvoja \\ \hline
+\end{tabularx}
+
+Tässä luvussa ei käyty läpi kaikkia Pythonin tietorakenteista, mutta aloittelijalle nämä neljä riittävät.
+
+\section{Tehtäviä}
+
+\begin{enumerate}[\thesection .1]
+
+\item Mitä tietorakennetta käyttäisit seuraavassa tilanteessa?
+
+\begin{enumerate}
+\item Haluat säilöä ruotsi-suomi-sanakirjan
+\item Haluat säilöä käyttäjän syöttämiä lukuja, joiden keskiarvon aiot laskea
+\item Haluat säilöä aineistossa esiintyneet sanat
+\end{enumerate}
+
+\item Tee ohjelma, joka kysyy käyttäjältä lukuja ja tulostaa niiden keskiarvon.
+
+\item Tee ohjelma, joka etsii listan suurimman luvun ja tulostaa sen.
+
+\item Luettele tuntemasi tietorakenteet, jotka...
+
+\begin{enumerate}
+\item ... ovat muuttuvia
+\item ... ovat järjestettyjä
+\item ... sallivat syntaksin \code{\textit{tietorakenne}[\textit{indeksi}]}
+\end{enumerate}
+
+\item Tee ohjelma, joka ensin täydentää hajautustaulun käyttäjän antamilla suomenkielisillä sanoilla ja niiden ruotsinkielisillä käännöksillä ja sitten kyselee sanoja satunnaisesti käyttäjältä.
+
+\end{enumerate}
