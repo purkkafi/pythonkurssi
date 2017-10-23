@@ -92,3 +92,38 @@
 	name=avainsana,
 	description={(engl. \textit{keyword}) Pythonin varaama termi, kuten \code{if} tai \code{while}, jota ei saa käyttää \glslink{muuttuja}{muuttujan} nimenä}
 }
+
+\newglossaryentry{tietorakenne}{
+	name=tietorakenne,
+	description={(engl. \textit{data structure}) Arvo, joka voi sisältää muita arvoja. Esimerkiksi \gls{lista} on tietorakenne}
+}
+
+\newglossaryentry{lista}{
+	name=lista,
+	description={(engl. \textit{list}) \glslink{indeksoitu}, muuttuva \gls{tietorakenne}, jonka voi määritellä syntaksilla \code{[1, 2, 3]}}
+}
+
+\newglossaryentry{alkio}{
+	name=alkio,
+	description={(engl. \textit{element, item, member}) Jonkin \glslink{tietorakenne}{tietorakenteen} sisältämä arvo. Esimerkiksi listan \code{["a", "b"]} alkioita ovat \code{"a"} ja \code{"b"}}
+}
+
+\newglossaryentry{joukko}{
+	name=joukko,
+	description={(engl. \textit{set}) \glslink{tietorakenne}{Tietorakenne}, jonka \glslink{alkio}{alkiot} eivät ole järjestyksessä, ja jossa jokaista alkiota voi olla vain yksi kappale}
+}
+
+\newglossaryentry{tuple}{
+	name=tuple,
+	description={(engl. \textit{tuple}, suomeksi myös \textit{monikko} ja \textit{tuppeli}) Muuttumaton, \gls{indeksoitu} \gls{tietorakenne}. Vertaa \glslink{lista}{listaan}}
+}
+
+\newglossaryentry{indeksoitu}{
+	name=indeksoitu,
+	description={(engl. \textit{ordered, indexed}) \glslink{tietorakenne}{Tietorakenne} on indeksoitu, jos sen \glslink{alkio}{alkiot} ovat jossakin järjestyksessä. Esimerkiksi \glslink{lista}{listat} \code{[4, 5]} ja \code{[5, 4]} ovat eri listoja, koska niiden alkiot ovat eri järjestyksessä, joten lista on indeksoitu tietorakenne}
+}
+
+\newglossaryentry{hajautustaulu}{
+	name=hajautustaulu,
+	description={(engl. \textit{hash table, hash map, dictionary}) \glslink{tietorakenne}{Tietorakenne}, jossa jokaista avainta vastaa jokin arvo. Avaimet ja arvot voivat olla mitä tahansa tyyppiä}
+}

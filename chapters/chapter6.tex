@@ -4,7 +4,7 @@
 
 Tähän asti edennyt Python-ohjelmoija osaa jo aika paljon, mutta tietämyksessä on yksi vakava aukko. Kun olemme halunneet kuvata jonkinlaista tietoa, olemme yksinkertaisesti määritelleet sille muuttujan. Mutta entä jos emme tiedä, kuinka monta arvoa haluamme käsitellä? Entä jos haluamme, että lukija saa syöttää mielivaltaisen määrän lukuja, joiden keskiarvo sitten lasketaan?
 
-Tähän on ratkaisu: listat. Lista on tietotyyppi, joka sisältää mielivaltaisen määrän muita arvoja (listan alkioita) -- siispä voimme määritellä muuttujan listaksi ja sitten käsitellä sitä. Lista määritellään seuraavalla syntaksilla:
+Tähän on ratkaisu: listat. \glslink{lista}{Lista} on tietotyyppi, joka sisältää mielivaltaisen määrän muita arvoja (listan \glslink{alkio}{alkioita}) -- siispä voimme määritellä muuttujan listaksi ja sitten käsitellä sitä. Lista määritellään seuraavalla syntaksilla:
 
 \begin{python}
 x = [1, 4, 2]
@@ -97,9 +97,11 @@ Syötä uusi luku tai paina enteriä lopettaaksesi:
 
 Listojen lisäksi on hyvä kiinnittää huomiota ohjelman toimintatapaan: se kysyy toistuvasti syötettä, kunnes käyttäjä antaa jotain tiettyä (tyhjän merkkijonon) ja sitten siirtyy varsinaiseen datan käsittelyyn. Tämä on kätevä käytäntö, kun haluaa täyttää listan käyttäjältä pyydetyillä arvoilla.
 
+Pieni terminologinen huomio: englannin sanat \textit{ordered} (jossakin järjestyksessä) ja \textit{sorted} (tietyssä järjestyksessä) suomennetaan kummatkin \textit{järjestetty}. Ero on siinä, että lista on aina \textit{ordered}, koska sen alkiot ovat tietyssä järjestyksessä, mutta siitä voidaan myös \code{sort()}-funktiolla tehdä \textit{sorted}, jolloin sen alkiot menevät suuruusjärjestykseen. On pääteltävä kontekstista, kumpaan viitataan; \textit{ordered}-sanalle käytetään tässä tekstissä myös vastinetta \textit{indeksoitu}.
+
 \section{Joukot}
 
-Pythonin joukot muistuttavat läheisesti matematiikan joukkoja: niiden alkioilla ei ole järjestystä, eikä samassa joukossa voi olla useaa identtistä alkiota. Jälkimmäinen on hyödyllinen ominaisuus, jos tarkoituksena on esimerkiksi luetella kaikki tekstissä olleet sanat -- joukko pitää automaattisesti huolen siitä, että jokainen sana listataan vain kerran.
+Pythonin \glslink{joukko}{joukot} muistuttavat läheisesti matematiikan joukkoja: niiden alkioilla ei ole järjestystä, eikä samassa joukossa voi olla useaa identtistä alkiota. Jälkimmäinen on hyödyllinen ominaisuus, jos tarkoituksena on esimerkiksi luetella kaikki tekstissä olleet sanat -- joukko pitää automaattisesti huolen siitä, että jokainen sana listataan vain kerran.
 
 Joukoille ei ole omaa syntaksia, vaan ne täytyy luoda \code{set}-funktiolla, jolle annetaan joukoksi muutettava lista. Seuraava esimerkkiohjelma pitää listaa tapahtumaan osallistuvista henkilöistä siten, että saman nimen voi syöttää useita kertoja (voidaan ajatella, että ohjelmaa käyttää useampia henkilöitä, joilla kaikilla on oma, osittain päällekäinen osallistujalista syötettäväksi ohjelmaan).
 
@@ -125,7 +127,9 @@ Joukoilla on iso joukko matematiikasta tuttuja ominaisuuksia, joihin ei tässä 
 
 \section{Tuplet}
 
-Ainoa tuplejen oleellinen ero listoihin verrattuna on se, että ne ovat muuttumattomia -- tuplejen alkiot eivät voi muuttua sen jälkeen, kun ne on määritelty, joten tupleilta puuttuvat listojen alkioita muuttavat ominaisuudet. Tuplejen määrittelemiseen on oma syntaksinsa, joka hyödyntää sulkumerkkejä: \code{("kissa", "koira")} määrittelee tuplen, jonka alkiot ovat merkkijonot \code{"kissa"} ja \code{"koira"}.
+Ainoa \glslink{tuple}{tuplejen} oleellinen ero listoihin verrattuna on se, että ne ovat muuttumattomia -- tuplejen alkiot eivät voi muuttua sen jälkeen, kun ne on määritelty, joten tupleilta puuttuvat listojen alkioita muuttavat ominaisuudet. Tuplejen määrittelemiseen on oma syntaksinsa, joka hyödyntää sulkumerkkejä: \code{("kissa", "koira")} määrittelee tuplen, jonka alkiot ovat merkkijonot \code{"kissa"} ja \code{"koira"}.
+
+Tuple-sanalla on useita vaihtoehtoisia suomennoksia. Virallisinta lienee puhua \textit{monikoista}, mutta myös termi \textit{tuppeli} on vakiintuneessa käytössä. Pythonin tuple-tyyppiä voi kuvailla myös esimerkiksi \textit{muuttumattomaksi listaksi}.
 
 Koska tuplet ovat muuttumattomia, niiden yhdistämiseen on oma syntaksinsa. Listoilla saattoi käyttää \code{lista.append(toinen)}-metodia -- se ei tupleille kävisi, koska se muuttaisi alkuperäistä tuplea. Sen sijaan on mahdollista käyttää \code{+}-merkkiä.
 
@@ -148,7 +152,7 @@ Käytännössä tuplet voisi aina korvata listoilla, mutta niilläkin on etunsa:
 
 \section{Hajautustaulut}
 
-Viimeisenä tietorakenteena esitetään hajautustaulut, joiden idea saattaa vaatia tarkempaa selostusta. Mietitään ensin vaikkapa listaa \code{["maanantai", "tiistai", "keskiviikko", ...]}. Jokaista alkiota vastaa tietty indeksi: indeksissä \code{0} on merkkijono \code{"maanantai"}, indeksissä \code{1} on \code{"tiistai"} ja niin edelleen. Jos tiedämme indeksin, voimme saada sitä vastaavan arvon syntaksilla \code{\textit{lista}[\textit{indeksi}]}. Taulukoidaan mahdolliset indeksit ja niitä vastaavat alkiot.
+Viimeisenä tietorakenteena esitetään \glslink{hajautustaulu}{hajautustaulut}, joiden idea saattaa vaatia tarkempaa selostusta. Mietitään ensin vaikkapa listaa \code{["maanantai", "tiistai", "keskiviikko", ...]}. Jokaista alkiota vastaa tietty indeksi: indeksissä \code{0} on merkkijono \code{"maanantai"}, indeksissä \code{1} on \code{"tiistai"} ja niin edelleen. Jos tiedämme indeksin, voimme saada sitä vastaavan arvon syntaksilla \code{\textit{lista}[\textit{indeksi}]}. Taulukoidaan mahdolliset indeksit ja niitä vastaavat alkiot.
 
 \begin{tabularx}{\textwidth}{ |X|X| }
 \hline
@@ -186,23 +190,25 @@ taulu = { 1 : "a", 2 : "b", 3 : "c" }
 
 Esimerkin hajautustaulussa indeksissä \code{1} on arvo \code{"a"}, indeksissä \code{2} arvo \code{"b"} ja niin edelleen.
 
-Jos haluaa käydä läpi kaiken hajautustaulussa olevan, voi käyttää kolmea eri tapaa: \code{taulu.keys()}, joka käy läpi indeksit, \code{taulu.values()}, joka käy läpi arvot sekä \code{taulu.items()}, joka käy läpi indeksi-arvo-parit tupleina. Esimerkki selkeyttää.
+Indekseistä käytetään hajautustaulujen yhteydessä termiä avain (engl. \textit{key}). Termien tekninen ero on siinä, että sisäisesti hajautustaulu käyttää numeroindeksejä, joiksi sille annetut avaimet muutetaan. Tästä ei Python-ohjelmoijan tarvitse välittää. Lisäksi hajautustaulun alkioita kutsutaan useimmiten arvoiksi (engl. \textit{value}).
+
+Jos haluaa käydä läpi kaiken hajautustaulussa olevan, voi käyttää kolmea eri tapaa: \code{taulu.keys()}, joka käy läpi avaimet, \code{taulu.values()}, joka käy läpi arvot sekä \code{taulu.items()}, joka käy läpi avain-arvo-parit tupleina. Esimerkki selkeyttää.
 
 \begin{example}{Hajautustaulun iteroiminen}
 taulu = { "kissa": "en katt", "koira" : "en hund", "hevonen" : "en häst"}
 
-# Käy läpi indeksit
-print("Taulun indeksejä ovat:")
-for indeksi in taulu.keys():
-	print(indeksi)
+# Käy läpi avaimet
+print("Taulun avaimia ovat:")
+for avain in taulu.keys():
+	print(avain)
 
-# Käy läpi alkiot
-print("Taulun alkioita ovat:")
-for alkio in taulu.values():
-	print(alkio)
+# Käy läpi arvot
+print("Taulun arvot ovat:")
+for arvo in taulu.values():
+	print(arvo)
 
-# Käy läpi indeksi-alkio-parit tupleina
-print("Taulukon indeksi-arvo-parit: ")
+# Käy läpi avain-arvo-parit tupleina
+print("Taulukon avain-arvo-parit: ")
 for tuple in taulu.items():
 	print(tuple)
 \end{example}
@@ -210,7 +216,7 @@ for tuple in taulu.items():
 Ohjelman ulostulo on seuraava:
 
 \begin{output}
-Taulun indeksejä ovat:
+Taulun avaimia ovat:
 hevonen
 koira
 kissa
@@ -218,7 +224,7 @@ Taulun alkioita ovat:
 en häst
 en hund
 en katt
-Taulukon indeksi-arvoparit: 
+Taulukon avain-arvo-parit: 
 ('hevonen', 'en häst')
 ('koira', 'en hund')
 ('kissa', 'en katt')
@@ -226,11 +232,11 @@ Taulukon indeksi-arvoparit:
 
 \section{Tietorakenteiden vertailua}
 
-Oikean tietorakenteen valitseminen voi helpottaa ohjelmointia dramaattisesti, joten on hyväksi muodostaa itselleen yleismielikuva siitä, mihin eri tietorakenteita useimmiten käytetään. Alla taulukko, joka tiivistää luvun tietorakenteiden perusominaisuudet.
+Oikean \glslink{tietorakenne}{tietorakenteen} valitseminen voi helpottaa ohjelmointia dramaattisesti, joten on hyväksi muodostaa itselleen yleismielikuva siitä, mihin eri tietorakenteita useimmiten käytetään. Alla taulukko, joka tiivistää luvun tietorakenteiden perusominaisuudet.
 
 \begin{tabularx}{\textwidth}{ |X|X|X|X| }
 \hline
-\textbf{Tietorakenne} & \textbf{Muuttuvuus} & \textbf{Järjestetty} & \textbf{Erityistä} \\ \hline
+\textbf{Tietorakenne} & \textbf{Muuttuvuus} & \textbf{Indeksoitu} & \textbf{Erityistä} \\ \hline
 Lista & Muuttuva & Kyllä & Voidaan järjestää \\ \hline
 Joukko & Muuttuva & Ei & Ei säilö useita identtisiä alkioita \\ \hline
 Tuple & Muuttumaton & Kyllä & Viestii muuttumattomuudellaan \\ \hline
