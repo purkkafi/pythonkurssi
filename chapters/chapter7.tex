@@ -1,0 +1,254 @@
+\chapter{Tiedostot}
+
+Tiedostot ovat hyvä työkalu moneen käyttötarkoitukseen: niillä voi tallentaa tietoja seuraavaa käyttökertaa varten, lukea kätevästi suuria määriä dataa tai antaa ohjelman ulostulon käyttäjäystävällisessä muodossa. Ensin ajaudumme kuitenkin sivupolulle, sillä on hyvä hetki opiskella virheidenhallintaa Pythonissa.
+
+\section{Virheidenhallinta}
+
+Virheitä tähän asti selvinnyt Python-ohjelmoija on jo nähnyt melkoisesti. Esimerkiksi yrittämällä muuttaa virheellisen merkkijonon kokonaisluvuksi (vaikkapa näin)
+
+\begin{python}
+int("tämä ei ole kokonaisluku")
+\end{python}
+
+saa virheen, kuten
+
+\begin{output}
+Traceback (most recent call last):
+  File "<stdin>", line ..., in <module>
+ValueError: invalid literal for int() with base 10: 'tämä ei ole kokonaisluku'
+\end{output}
+
+Aina ei ole tyydyttävää, että ohjelman suoritus yksinkertaisesti loppuu, jos jokin menee pieleen. Kuvitellaan esimerkiksi, että olemme pyytämässä käyttäjää syöttämään jonkin luvun; jos käyttäjä syöttääkin jotakin virheellistä, voisi olla järkevämpää pyytää kokeilemaan uudestaan. Tähän on keino: \code{try}-lause. Sen anatomia on yksinkertainen:
+
+\begin{python}
+try:
+	# Koodia, joka voi heittää virheen
+except Virhe:
+	# Virhe tuli! Reagoi tekemällä jotakin järkevää
+\end{python}
+
+Esimerkissä \code{Virhe}-kohtaan laitetaan sen virheen nimi, jonka sattuessa halutaan toimia jotenkin. Esimerkiksi silloin, kun \code{int()}-funktiolle annetaan virheellinen arvo, on seurauksena \code{ValueError}-virhe, kuten virheviesti kertoo. Jos haluaisimme kysyä käyttäjältä kokonaislukua, kunnes hyväksytty arvo syötetään, voitaisiin siis toimia vaikka näin:
+
+\begin{example}{Virheidenhallinta lukua kysyttäessä}
+while True: # Toistetaan ikuisesti
+	try:
+		luku = int(input("Syötä kokonaisluku: "))
+		break # Jos virhettä ei tullut, poistutaan silmukasta
+	except ValueError:
+		print("Yritä uudelleen")
+
+# Tiedetään, että tässä kohtaa luku on hyväksytty kokonaisluku
+print("Lukusi oli " + str(luku))
+\end{example}
+
+Ohjelman suoritus voisi edetä esimerkiksi näin:
+
+\begin{output}
+Syötä kokonaisluku: kissa
+Yritä uudelleen
+Syötä kokonaisluku: 5.6
+Yritä uudelleen
+Syötä kokonaisluku: 2
+Lukusi oli 2
+\end{output}
+
+Ohjelman rakennetta kannattaa tutkia varovaisesti. \code{while}-silmukan avulla lukujen kysymistä toistetaan ikuisesti. Jos syötetty merkkijono ei kelpaa, syntyy \code{ValueError}, jolloin siirrytään virheen hallintaan -- muussa tapauksessa saavutetaan \code{break} ja poistutaan silmukasta.
+
+Omia virheitäänkin voi -- ja kannattaa -- käyttää. Jos vaikka olisi toteuttanut oman funktionsa, joka laskee luvun kertoman, voisi virheellä ilmaista, että sen argumentiksi kelpaavat vain epänegatiiviset arvot. Tämä tehdään \code{raise}-avainsanalla.
+
+\begin{example}{Virheiden käyttäminen omissa funktioissa}
+def kertoma(n):
+	if n < 0:
+		raise ValueError("Luku ei voi olla negatiivinen")
+	# Laske tulos...
+\end{example}
+
+Jos joku yrittäisi nyt kutsua funktiota virheellisellä argumentilla, olisi tuloksena virheilmoitus.
+
+\begin{output}
+Traceback (most recent call last):
+  File "<stdin>", line ..., in <module>
+  File "<stdin>", line 3, in kertoma
+ValueError: Luku ei voi olla negatiivinen
+\end{output}
+
+Käyttäjälle kannattaa aina kirjoittaa hyödyllinen virheilmoitus, joka selventää, mikä meni pieleen.
+
+Pythonissa on lukuisia virheitä, joihin törmää eri tilanteissa. Alla on taulukoituna yleisimpiä.
+
+\begin{tabularx}{\textwidth}{ |X|X| }
+\hline
+\textbf{Virhetyyppi} & \textbf{Merkitys} \\ \hline
+\code{ValueError} & Funktiolle annettiin virheellinen arvo \\ \hline
+\code{TypeError} & Jossakin käytettiin arvoa, jonka tyyppi oli väärä \\ \hline
+\code{ZeroDivisionError} & Nollalla jakaminen \\ \hline
+\code{IndexError} & Listasta tai tuplesta yritettiin hakea virheellistä indeksiä \\ \hline
+\code{KeyError} & Hajautustaulusta yritettiin hakea virheellistä avainta \\ \hline
+\code{IOError} & Tiedoston lukeminen epäonnistui (tarkempaa tietoa seuraavassa osiossa) \\ \hline
+\end{tabularx}
+
+Lista ei ole täysin kattava; jos haluaa selvittää, mikä virhe mistäkin tulee, helpointa on tarkistaa Pythonin dokumentaatiosta tai yksinkertaisesti aiheuttaa virhe ja katsoa.
+
+Halutessaan antaa virhen omasta funktiostaan kannattaa valita järkevä virhetyyppi. Jos annettu merkkijono on liian lyhyt, ei kannata antaa käyttäjälle \code{ZeroDivisionError}-virheenä.
+
+Viimeisenä huomiona virheistä voidaan todeta, että samassa \code{try}-lohkossa voi tarkistaa useita eri virheitä -- on vain laitettava peräkkäin useita \code{except}-lohkoja.
+
+\begin{python}
+try:
+	# Täältä tulee kamalasti virheitä
+except Virhe1:
+	# Tuli Virhe1-tyypin virhe
+except Virhe2:
+	# Tyli Virhe2-tyypin virhe
+\end{python}
+
+\section{Tiedostojen lukeminen ja kirjoittaminen}
+
+Tiedostojen yksinkertainen hallinta onnistuu \code{open()}-funktiolla ja sen palauttamilla tiedostoa kuvaavilla arvoilla. Funktiolla on lukuisia argumentteja, mutta sitä voi käyttää myös antamalla vain yhden: polun, joka kuvaa haluttua tiedostoa. Polku voi olla kokonainen tiedostopolku (esimerkiksi Windowsilla \code{C:\textbackslash user\textbackslash koodaaja\textbackslash kivatiedosto.txt} tai Unix-pohjaisilla järjestelmillä \code{/home/koodaaja/kivatiedosto.txt}) tai paikallinen tiedosto (\code{kivatiedosto.txt}), jolloin Python etsii sen suorituskansiosta.
+
+\code{open()} palauttaa tiedosto-objektin, jonka viittaa tiedosto voidaan lukea tai siihen voidaan tehdä muutoksia. Tässä yksinkertainen esimerkki, joka tulostaa kokonaan paikallisen tiedoston \code{kivatiedosto.txt}.
+
+\begin{python}
+tiedosto = open("kivatiedosto.txt")
+print(tiedosto.read())
+tiedosto.close() # Tärkeää!
+\end{python}
+
+Esimerkin ulostulo on tiedoston \code{kivatiedosto.txt} sisältö, mitä se sitten onkaan.
+
+Viimeisellä rivillä tulee tärkeä huomio: käsittelemänsä tiedostot täytyy aina sulkea. Seuraavassa osiossa opitaan tapa, jolla tämän voi automatisoida, mutta siihen asti on muistettava sulkea kiltisti kaikki käyttämänsä tiedostot. Käyttöjärjestelmästä riippuen sillä, että käyttämiään tiedostoja ei sulje, voi olla erilaisia epämiellyttäviä sivuvaikutuksia -- tiedostoihin tehdyt muutokset eivät ehkä oikeasti tapahdu tai muut ohjelmat eivät välttämättä voi käsitellä tiedostoa.
+
+\code{open()}-funktiolle voi antaa myös toisen parametrin, joka on pakollinen, jos tiedostoa haluaa muokata. Alla on taulukoituna yleisimmät vaihtoehdot.
+
+\begin{tabularx}{\textwidth}{ |X|X| }
+\hline
+\textbf{Käyttötapa} & \textbf{Merkitys} \\ \hline
+\code{open(\textit{tiedosto}, "r")} & Tiedostoa luetaan (oletus) \\ \hline
+\code{open(\textit{tiedosto}, "w")} & Tiedosto tyhjennetään ja siihen kirjoitetaan \\ \hline
+\code{open(\textit{tiedosto}, "a")} & Tiedoston perään kirjoitetaan lisää \\ \hline
+\code{open(\textit{tiedosto}, "x")} & Tiedosto luodaan (tulee virhe, jos se on jo olemassa) \\ \hline
+\end{tabularx}
+
+Tiedosto-objektien ominaisuuksia on puolestaan lueteltu seuraavassa taulukossa. Tiedosto on aina muistettava avata oikeassa tilassa; jos tiedostoa luetaan, sen on oltava avattu \code{"r"}-tilassa.
+
+\begin{tabularx}{\textwidth}{ |X|X| }
+\hline
+\textbf{Syntaksi} & \textbf{Merkitys} \\ \hline
+\multicolumn{2}{|c|}{\textbf{Tiedoston perusominaisuuksia}} \\ \hline
+\code{\textit{tiedosto}.name} & Tiedostonimi merkkijonona \\ \hline
+\code{\textit{tiedosto}.closed} & \code{bool}-arvo, joka kertoo, suljettiinko tiedosto jo \\ \hline
+\code{\textit{tiedosto}.close()} & Sulkee tiedoston \\ \hline
+\code{\textit{tiedosto}.mode} & Tila, jossa tiedosto avattiin \\ \hline
+\multicolumn{2}{|c|}{\textbf{Tiedoston lukeminen}} \\ \hline
+\code{\textit{tiedosto}.read()} & Lukee koko tiedoston \\ \hline
+\code{\textit{tiedosto}.readlines()} & Palauttaa tiedoston rivit listassa \\ \hline
+\multicolumn{2}{|c|}{\textbf{Tiedostoon kirjoittaminen}} \\ \hline
+\code{\textit{tiedosto}.write(\textit{sisältö})} & Kirjoittaa annetun merkkijonon tiedostoon \\ \hline
+\code{\textit{tiedosto}.writelines(\textit{lista})} & Kirjoittaa annetun listan merkkijonot tiedostoon jokainen omalla rivillään \\ \hline
+\end{tabularx}
+
+\section{\code{with}-lause}
+
+Ennen monimutkaisempia esimerkkejä on tarpeen opiskella tapa, jota käyttämällä tiedostot sulkeutuvat automaattisesti: \code{with}-lause. Kun sitä käyttää, unohtunut \code{close()} ei enää aiheuta mystisiä virheitä. Rakenteeltaan \code{with} on yksinkertainen.
+
+\begin{python}
+with open(...) as tiedosto:
+	# Käsitellään tiedostoa
+# Kun with-lohkosta poistutaan, tiedosto suljetaan automaattisesti
+\end{python}
+
+\code{with}-lauseen sisällä tiedostoa käsitellään tavallisesti; kun siitä poistutaan, tiedosto suljetaan. Käytännön esimerkki lienee tarpeen, joten kokeillaan samalla tiedostoon kirjoittamista.
+
+\begin{example}{Tiedoston käsittely \code{with}-lauseella}
+with open("lista.txt", "a") as lista:
+        print("Kirjoita tiedostoon lisää rivejä; tyhjä rivi lopettaa.")
+        while True:
+                rivi = input("Syötä rivi: ")
+                if rivi == "":
+                        break
+                else:
+                        lista.write(rivi + "\n")
+
+print("Lopetettu, tiedostossa on nyt:")
+
+with open("lista.txt", "r") as lista:
+        print(lista.read())
+\end{example}
+
+Esimerkki on pitkä, joten käydään se läpi huolellisesti. Ensimmäisellä rivillä tiedosto avataan \code{"a"}-tilassa, joten käyttäjän tekemät muutokset säilyvät: jos ohjelman ajaa monta kertaa, se lisää uudet rivit tiedostoon edellisten perään.
+
+Kuten aiemmatkin esimerkit, tämä hyödyntää ikuista \code{while}-silmukkaa, josta poistutaan \code{break}-avainsanalla sitten, kun käyttäjä syöttää tyhjän rivin ja tulkitaan, että ohjelman suoritus saa pysähtyä.
+
+Rivillä 8 tiedostoon kirjoitetaan käyttäjän syöttämä rivi yhdistettynä \glslink{koodinvaihtomerkki}{koodinvaihtomerkillä} aikaansaatuun rivinvaihtoon \code{\textbackslash n}, mikä saa aikaan sen, että jokainen rivi on omalla rivillään. Jos näin ei tehtäisi, käyttäjän syöte ilmestyisi tiedostoon yhdellä rivillä ilman mitään erottimia.
+
+Rivillä 12 sama tiedosto avataan uudestaan, mutta tällä kertaa \code{"r"}-tilassa, jolloin se voidaan lukea.
+
+Ohjelman suoritus voisi edetä vaikkapa näin:
+
+\begin{output}
+Kirjoita tiedostoon lisää rivejä; tyhjä rivi lopettaa.
+Syötä rivi: kissa
+Syötä rivi: koira
+Syötä rivi: hevonen
+Syötä rivi: 
+Lopetettu, tiedostossa on nyt:
+kuha
+kissa
+koira
+hevonen
+\end{output}
+
+Ulostulon rivi \code{kuha} oli tiedostossa jo valmiiksi.
+
+\section{Virheidenhallinta tiedostojen kanssa}
+
+Luvun ensimmäisestä osiosta tutulla \code{try}-syntaksilla voi käsitellä myös tiedostoista aiheutuvia virheitä. \code{IOError}-virhe syntyy, kun haluttua tiedostoa ei ole olemassa tai sitä ei muusta syystä voida käsitellä. Esimerkissä luetaan käyttäjän syöttämän tiedoston sisältö ja tulostetaan avulias virhe, jos jokin menee pieleen.
+
+\begin{example}{Tiedostot ja virheidenkäsittely}
+try:
+        with open(input("Syötä tiedostonimi: ")) as tiedosto:
+                print("Tiedoston sisältö on:")
+                print(tiedosto.read())
+except IOError:
+        print("Virhe lukiessa tiedostoa; onko se varmasti olemassa?")
+\end{example}
+
+Jos käyttäjän syöttämää tiedostoa ei ole, ulostulo näyttää seuraavalta:
+
+\begin{output}
+Syötä tiedostonimi: tätätiedostoa.eiolemassa
+Virhe lukiessa tiedostoa; onko se varmasti olemassa?
+\end{output}
+
+Muussa tapauksessa tulostetaan tiedoston sisältö.
+
+\section{Tehtäviä}
+
+\begin{enumerate}[\thesection .1]
+
+\item Muokkaa esimerkkiä 7.4 sellaiseksi, että tiedostonimeä kysytään, kunnes tiedosto on olemassa. Käytä \code{while}-silmukkaa.
+
+\item Tee ohjelma, joka kääntää annetun tiedoston rivit siten, että ensimmäisestä rivistä tuleekin viimeinen ja niin edelleen.
+
+\item Keksi jokin Python-koodirivi, joka tuottaa seuraavan virheen:
+
+\begin{enumerate}
+\item \code{ValueError}
+\item \code{TypeError}
+\item \code{IndexError}
+\end{enumerate}
+
+\item Oleta, että on olemassa jokin tiedosto, jossa on jokaisella rivillä lämpötilamittauksen tulos, esimerkiksi
+
+\begin{output}
+15.4
+17.5
+16.2
+...
+\end{output}
+
+Tee ohjelma, joka lukee mittaustulokset käyttäjän antamasta tiedostosta ja laskee niiden keskiarvon. Jos käyttäjän antamaa tiedostoa ei ole olemassa, tulosta hyödyllinen virheviesti. Testaa ohjelmaasi omalla esimerkkitiedostollasi.
+
+\item \code{open()}-funktiolle voi antaa parametrinä myös \textit{merkistökoodauksen}, esimerkiksi \code{open("tiedosto.txt", "r", encoding="utf-8")}. Selvitä Googlen avulla, mikä on merkistökoodaus ja miksi se täytyy toisinaan määritellä, kun lukee tiedostoa.
+
+\end{enumerate}
