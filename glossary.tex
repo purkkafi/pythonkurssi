@@ -100,7 +100,7 @@
 
 \newglossaryentry{lista}{
 	name=lista,
-	description={(engl. \textit{list}) \glslink{indeksoitu}, muuttuva \gls{tietorakenne}, jonka voi määritellä syntaksilla \code{[1, 2, 3]}}
+	description={(engl. \textit{list}) \gls{indeksoitu}, muuttuva \gls{tietorakenne}, jonka voi määritellä syntaksilla \code{[1, 2, 3]}}
 }
 
 \newglossaryentry{alkio}{
@@ -126,4 +126,39 @@
 \newglossaryentry{hajautustaulu}{
 	name=hajautustaulu,
 	description={(engl. \textit{hash table, hash map, dictionary}) \glslink{tietorakenne}{Tietorakenne}, jossa jokaista avainta vastaa jokin arvo. Avaimet ja arvot voivat olla mitä tahansa tyyppiä}
+}
+
+\newglossaryentry{luokka}{
+	name=luokka,
+	description={(engl. \textit{class}) Yleisnimitys \glslink{tyyppi}{tyypille}, jolla on \glslink{attribuutti}{attribuutteja}, \glslink{metodi}{metodeja} ja \gls{periytys}. Pythonissa kaikki tyypit ovat luokkia}
+}
+
+\newglossaryentry{olio}{
+	name=olio,
+	description={(engl. \textit{object}) Jonkin \glslink{luokka}{luokan} yksi esiintymä; esim. \code{7} on \code{int}-luokan olio}
+}
+
+\newglossaryentry{attribuutti}{
+	name=attribuutti,
+	description={(engl. \textit{attribute}) Johonkin \glslink{olio}{olioon} liitetty muuttuja. \code{kissa.nimi} on \code{kissa}-olion attribuuttia \code{nimi}}
+}
+
+\newglossaryentry{konstruktori}{
+	name=konstruktori,
+	description={(engl. \textit{constructor}) Erityinen \gls{metodi}, joka suoritetaan silloin, kun \gls{olio} luodaan}
+}
+
+\newglossaryentry{metodi}{
+	name=metodi,
+	description={(engl. \textit{method}) \glslink{olio}{Olioon} liitetty funktio. \code{olio.metodi(argumentit)} kutsuu \code{olio}-olion metodia \code{metodi}}
+}
+
+\newglossaryentry{periytys}{
+	name=periytys,
+	description={(engl. \textit{inheritance}) \glslink{luokka}{Luokan} ominaisuus, jolla se voi kopioida toisen luokan tietoja}
+}
+
+\newglossaryentry{yliajaminen}{
+	name=yliajaminen,
+	description={(engl. \textit{overloading}) Se, että jonkin \glslink{metodi}{metodin} \glslink{periytys}{perivä} \gls{olio} määrittelee sen uudelleen}
 }
