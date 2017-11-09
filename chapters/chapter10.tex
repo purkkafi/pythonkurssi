@@ -1,0 +1,155 @@
+\chapter{Siistin koodin käytänteitä}
+
+Siitä, että osaa ohjelmoida, ei automaattisesti seuraa, että osaisi ohjelmoida hyvin. Selkeän, siistin ja helppolukuisen koodin kirjoittaminen on taito, jota ei opi harjoittelematta; tässä luvussa tutustutaan muutamiin periaatteisiin, joita noudattamalla ohjelmiensa ymmärrettävyyttä voi kohentaa.
+
+Miksi kirjoittaa siistiä koodia? Jos kyse on kymmenen rivin sovelluksesta, joka heitetään roskakoriin välittömästi käytön jälkeen, on totta, että tyylisääntöihin ei kannata haaskata aikaa. Jokainen ohjelmointia laajemmin harrastava törmää kuitenkin joskus seuraaviin ongelmatilanteisiin:
+
+\begin{itemize}
+\item Ohjelman parissa työskentelee useampi ihminen, jotka eivät saa selvää toistensa koodista
+\item Kuluu niin kauan aikaa, että ohjelmoija itse unohtaa, mitä on koodia kirjoittaessaan tarkoittanut
+\item Ohjelma kasvaa niin monimutkaiseksi, että alussa tehdyt huolimattomat ratkaisut estävät tehokkaan laajentamisen
+\end{itemize}
+
+Kaikkeen ei voi varautua, mutta siistin koodin periaatteet auttavat myös kirjoittamaan ohjelmia, joita on helpompaa muokata myöhemmin.
+
+\section{Oikeiden rakenteiden käyttäminen}
+
+Python -- kuten mikä tahansa ohjelmointikieli -- tarjoaa useita tapoja toteuttaa minkä tahansa ohjelman. Jos haluamme esimerkiksi tulostaa muuttujassa \code{lista} sijaitsevan listan alkiot, jokainen omalle rivilleen, kumpi tahansa seuraavista esimerkkiohjelmista toimii.
+
+\begin{python}
+# Ohjelma 1
+indeksi = 0
+while indeksi < len(lista):
+	alkio = lista[indeksi]
+	print(alkio)
+
+# Ohjelma 2
+for alkio in lista:
+	print(alkio)
+\end{python}
+
+Ohjelma 2 on tietenkin siistimpi toteutus. Kun itse miettii, mikä monista vaihtoehdoista kannattaa valita, voi miettiä seuraavia seikkoja:
+
+\begin{itemize}
+\item Suosi lyhyttä toteutusta. 5 rivin ohjelmaa on todennäköisesti helpompi ymmärtää kuin sellaista, jossa on 10 riviä.
+\item Suosi idiomaattista toteutusta. \code{for}-lausetta käytetään tietorakenteiden läpikäymiseen, joten kokenut ohjelmoija ymmärtää heti sen nähdessään, mistä on kyse. Ohjelma 1 voi puolestaan hämätä, koska useimmiten \code{while}-lausetta käytetään johonkin muuhun.
+\item Suosi Pythonin valmiita funktioita. Omaa toteutusta ei kannata kirjoittaa, jos Pythonissa on jo vaihtoehto, joka on suurelle osalle koodia lukevista tuttu ennestään.
+\item Suosi virheitä ehkäisevää toteutusta. Jos kolmas 3 olisikin \code{while indeksi <= len(lista):}, virhettä ei välttämättä heti huomaisi. Ohjelma 2 ei tarvitse \code{indeksi}-muuttujaa ollenkaan, mikä tekee mahdottomaksi sen väärinkäytöstä johtuvat virheet. Koodia tarkasti lukevan ei myöskään tarvitse käyttää aivokapasiteettiaan sen pohtimiseen, onko kaikki koodissa varmasti oikein.
+\end{itemize}
+
+Otetaan vielä toinen esimerkki. Vertaillaan äskeisillä kriteereillä kahta tapaa tulostaa tiedoston sisältö.
+
+\begin{python}
+# Ohjelma 1
+tiedosto = open("tiedosto.txt", "r")
+print(tiedosto.read())
+tiedosto.close()
+
+# Ohjelma 2
+with open("tiedosto.txt", "r") as tiedosto:
+	print(tiedosto.read())
+\end{python}
+
+Ohjelma 2 on yhden rivin lyhyempi. Se on myös selvän idiomaattinen -- \code{with open(...)} kommunikoi välittömästi, että on kyse tiedostosta, jota käsitellään lohkon sisällä. Se, ettei \code{close()}-metodia tarvitse kutsua itse, poistaa sen virheen vaaran, että näin unohtaa tehdä; olisitko huomannut, jos \code{close()} olisi puuttunut ohjelmasta 1?
+
+Oikeiden rakenteiden käyttämisessä on pohjimmiltaan kyse siitä, kuinka viestiä koodin lukijalle mahdollisimman selvästi, että ohjelma tekee juuri sen, mitä se tekee. Jos on epävarma, voi vaikka kysyä kaverilta, mikä toteutus näyttää selkeimmältä.
+
+\section{Hyvin nimeäminen}
+
+Osaisitko arvata, mitä seuraava funktio tekee?
+
+\begin{python}
+def f(a, b, c):
+       d = 0
+       for e in a:
+              d = d + e
+       return b >= d * c
+\end{python}
+
+Huolellisella tarkastelulla kyllä selviäisi, \code{mitä} funktio palauttaa, mutta minkäänlaista kontekstia ei välttämättä saa ilman arvailuja. Miksi tällainen funktio on olemassa? Mitä hyötyä siitä on? Jos se toimii väärin, kuinka korjaan sen?
+
+Vertaa ymmärrettävyyttä seuraavaan funktioon:
+
+\begin{python}
+def voiko_ostaa(tuotteiden_hinnat, rahaa, alennus):
+       summa = 0
+       for hinta in tuotteiden_hinnat:
+              summa = summa + hinta
+       return rahaa >= summa * alennus
+\end{python}
+
+Pelkkä se, että muuttujat, funktiot ja niiden argumentit nimeää siististi, avustaa ohjelman tulkitsemisessa. Ylhäällä esitellyt funktiot eivät toiminnallisesti eroa mitenkään, mutta on ilmiselvää, että alempi on se, mitä koodinsa luettavuudesta huolehtivan kannattaa tavoitella.
+
+Hyvä nimi -- vaikka tämä ilmiselvältä kuulostaisi -- kertoo, mistä on kyse. \code{hinta}-niminen muuttuja kertoo, että kyse on jonkin hinnasta, kun taas \code{e} ei juuri mitään (ellei kyseessä ole Neperin luku $e$). Hyvä nyrkkisääntö onkin, että yksikirjaimisia muuttujia kannattaa käyttää vain silloin, kun kyse on matematiikan tai fysiikan vakiintuneesta tunnuksesta. Lisäksi käydessä läpi vaikkapa lukuväliä käytetään perinteisesti muuttujaa \code{i}.
+
+Helpointa on luetella sääntöjä sille, minkälainen hyvin nimetty funktio tai muuttuja ei ainakaan saa olla. Hyvä nimi ei...
+
+\begin{itemize}
+\item ... ole tarpeettoman lyhyt (\code{a}, \code{ht} tarkoittamaan hajautustaulua tai \code{li} listaa)
+\item ... ole toisaalta liian pitkä (\code{lisää\_tuote\_tietokantaan\_jos\_nettiyhteys\_toimii} on hyvä esimerkki; käytä kommentteja, jos haluat kertoa funktiosta lisää)
+\item ... sisällä turhia täytesanoja, kuten \code{data}, \code{tieto} tai jopa \code{muuttuja} (\code{merkkijono\_data\_tieto\_muuttuja} on pitkä nimi, mutta käytännössä viestii vain, että kyseessä on merkkijono)
+\item ... valehtele. Jos muuttujan nimi on \code{luku}, siihen ei missään tapauksessa aseteta myöhemmin merkkijonoa.
+\end{itemize}
+
+\section{Hyvä kommentoiminen}
+
+Kommentteihin tutustuttiin jo kirjan ensimmäisessä luvussa: \code{\#}-merkki aloittaa kommentin, joka jatkuu rivin loppuun saakka. Nyt, kun tietämystä ohjelmoinnista on ehtinyt kertyä enemmän, on hyvä hetki tutustua hyödyllisen kommentoinnin käytäntöihin.
+
+Hyvä kommentti ennen kaikkea \code{välittää sellaista tietoa, jota koodista itsestään ei voi päätellä}. Miksi tehdään juuri näin? Miksi tämä on tarpeen? Onko mielessä parannushdotus tulevan varalle? Pitääkö tätä funktiota käyttäessään tietää jotakin erityistä? Kaiken tällaisen voi ilmaista kommentilla.
+
+Käytännön esimerkki hyvästä kommentista lienee tarpeen.
+
+\begin{python}
+# Muutetaan tuple listaksi, jotta sen arvoja voi muokata
+nimilista = list(nimituple)
+\end{python}
+
+Jos koodin lukija ei muista, että \glslink{tuple}{tuplejen} arvoja ei voi muokata, rivin tarkoitus voi jäädä pimentoon. Täsmentävä kommentti selittää, miksi näin on tehtävä, jotta joku ei esimerkiksi poista riviä.
+
+Kommentteja käytetään usein myös ennen funktion määrittelyä kertomaan lisätietoja sen argumenteista, paluuarvosta tai muista huomioitavista asioista.
+
+\begin{python}
+# Palauttaa indeksin, jossa annettu alkio annetussa listassa sijaitsee.
+# Listan ei tarvitse olla järjestetty, koska funktio kopioi sen itselleen
+# ja järjestää kopion.
+def binaarihaku(lista, alkio):
+	...
+\end{python}
+
+Huonoja kommentteja on monenlaisia. Jotkut ovat niin tarpeettomia, että vain hämäävät lukijaa, joka jää pohtimaan, miksi kommentti ylipäätään on olemassa:
+
+\begin{python}
+# laskee, mitä 2 + 3 on
+tulos = 2 + 3
+\end{python}
+
+Joskus kommentti voi jopa valehdella, jos koodia on muokattu unohtamatta muuttaa sitä. Tälläkin voi olla hämäävä vaikutus:
+
+\begin{python}
+# Muuttaa kissan nimen. Argumentin on oltava merkkijono!
+def muuta_nimi(uusi_nimi):
+	nimi = str(uusi_nimi)
+	if len(nimi) < 3:
+		raise ValueError("Nimi on liian lyhyt")
+	...
+\end{python}
+
+Voisi arvata, että ohjelmoija lisäsi funktioon sen ominaisuuden, että se muuttaa argumenttinsa merkkijonoksi \code{str}-funktiolla huomattuaan, että tästä on jotain hyötyä, mutta unohti päivittää kommentin, jonka huomautus on nyt valheellinen.
+
+Koska kommentti vie lukijan huomion, on ylipäätään järkevää harkita, mitkä kommenteista ovat todella tarpeen. Kriteerit saa kuitenkin suhteuttaa kodeyleisöönsä: Python-kurssin aloittelijoille kannattaa selventää sellaistakin, mitä ei Pythonia työkseen ohjelmoivalle selventäisi.
+
+\section{Tyylisääntöjen noudattaminen}
+
+Viralliset ohjeet Python-koodin muotoilemiseen löytyvät seuraavalta sivulta: \url{https://www.python.org/dev/peps/pep-0008/} Dokumentti on varsin pitkä, joten tässä tiivistettynä se, mitä aloittelijan on hyvä tietää.
+
+\begin{itemize}
+\item Muuttujat ja funktiot kirjoitetaan pienellä alkukirjaimella: \code{kissa}, \code{kasvatalukua}, \code{lähinpiste}
+\item Halutessaan sanoja niiden sisällä saa erottaa alaviivalla: \code{kasvata\_lukua}, \code{lähin\_piste}
+\item \code{import}-lauseet laitetaan peräkkäin tiedoston alkuun
+\item Turhia välilyöntejä vältetään: \code{funktio(arg1, arg2)}, ei \code{funktio ( arg1, arg2 )}; \code{lista[indeksi]}, ei \code{lista [ indeksi ]}
+\item Luokat kirjoitetaan \code{IsollaJaYhteen}
+\end{itemize}
+
+Miksi noudattaa tyylisääntöjä? Säännöt itsessään ovat melko mielivaltaisia (toki voi perustellusti olla sitä mieltä, että \code{tätäonärsyttäväälukea} ja \code{tätä\_on\_miellyttävää\_lukea}), mutta niiden noudattaminen ei. Niilläkin on koodin lukemista helpottava vaikutus: kun kaikki noudattaa yhdenmukaista säännöstöä, nopea silmäily vaikkapa kertoo, että \code{kissa} on muuttuja, mutta \code{Kissa} luokka.
+
+Pythonin virallisten tyylisääntöjen noudattamista tärkeämpää se, että jatkaa niiden noudattamista, joita muokattavassa koodissa jo suositaan. Jos sinut laitetaan jatkamaan projektia, jossa on 50000 \code{näinKirjoitettuaMuuttujaa}, kannattaa mieluummin jatkaa perinnettä kuin muuttaa kaikki \code{virallisten\_sääntöjen\_mukaisiksi}.

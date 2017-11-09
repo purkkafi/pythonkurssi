@@ -1,0 +1,218 @@
+\chapter{Olio-ohjelmointi}
+
+\section{Käsitteet luokka ja olio}
+
+Olemme tähän mennessä tutustuneet erilaisiin \glslink{tyyppi}{tyyppeihin}. \glslink{luokka}{\textit{Luokaksi}} kutsutaan yleensä ohjelmoinnissa sellaista tyyppiä, jolla on seuraavat ominaisuudet:
+
+\begin{itemize}
+\item Luokalla voi olla \textit{tila}, eli siihen voi liittyyä jonkinlaisia arvoja. Esimerkiksi tuotetta kuvaavan luokan tila voisi koostua sen nimestä ja hinnasta, joita kutsutaan luokan \glslink{attribuutti}{\textit{attribuuteiksi}}.
+\item Luokalla voi olla \textit{metodeita}, eli voi olla jonkinlaisia toimintoja, joita luokka voi suorittaa. Lista voidaan järjestää siten, että sen alkiot ovat suuruusjärjestyksessä; merkkijono voidaan lisätä toiseen merkkijonoon.
+\item Luokka voidaan \glslink{periytys}{\textit{periyttää}} toisesta luokasta, jolloin luokka saa yläluokkansa tilan ja metodit. Tästä lisää Periytys-osiossa.
+\end{itemize}
+
+Python 2:ssa tyypit oli jaoteltu luokkiin ja muihin tyyppeihin, mutta Python 3:ssa kaikki tyypit ovat luokkia, joten käytännössä luokka ja tyyppi ovat Pythonissa nykyisin synonyymejä.
+
+Arvoa, joka on jonkin luokan tyyppinen, sanotaan luokan \glslink{olio}{\textit{olioksi}} (sekä \textit{esiintymäksi}, \textit{objektiksi} tai \textit{instanssiksi}). Esimerkiksi arvot \code{"Hei!"} ja \code{"merkkijono"} ovat \code{str}-luokan olioita ja arvo \code{7} on \code{int}-luokan olio.
+
+Luokan voi siis ajatella olevan suunnitelma, jonka perusteella olioita luodaan: se kertoo, mitä tietoja oliot talletavat. \code{Piste}-luokka määrittelee, että pisteellä on x- ja y-koordinaatit; jokainen piste tietää, mitkä sen omat arvot näille attribuuteille ovat.
+
+\section{Omien luokkien määritteleminen}
+
+Käsitteitä ei opeteltu huvin vuoksi, vaan ne ovat tarpeen, kun harjoitellaan omien luokkien luomista. Ei käsitellä vielä metodeita tai periytystä; keskitytään yksinkertaisiin luokkiin, joilla on ainoastaan attribuutteja. Aiemmin mainittiin esimerkkinä \code{Piste}-luokka, jolla oli attribuutteinaan kaksi koordinaattia -- katsotaan, miltä se Pythonissa näyttää.
+
+\begin{example}{Luokka attribuuteilla}
+# Määritellään Piste-luokka
+class Piste:
+	pass # Tyhjä luokka
+
+# Luodaan olio
+p = Piste()
+p.x = -7
+p.y = 4.5
+print("Koordinaatit ovat (", p.x, ", ", p.y, ")")
+\end{example}
+
+Luokan määrittely aloitetaan syntaksilla \code{class \textit{LuokanNimi}:}, ja kaikki sen jälkeen tuleva sisennetty koodi liittyy luokkaan. Attribuutteja ei tarvitse erikseen määritellä ennalta, joten \code{pass}-avainsana kertoo Pythonille, että luokka on tarkoituksella tyhjä.
+
+Kun luokka on määritelty, sen olioita voi luoda syntaksilla \code{\textit{LuokanNimi()}}. Attribuutteja voi kirjoittamalla \code{\textit{olio}.\textit{attribuutti}} käyttää aivan kuten tavallisia muuttujia -- esimerkissä asetetaan pisteen x-koordinaatti kirjoittamalla \code{p.x = -7}, ja saman attribuutin arvon saa yksinkertaisesti {p.x}. Jos attribuutin unohtaa määritellä ennen sen käyttöä, tulee \code{AttributeError}-virhe.
+
+Viimeisellä rivillä käytetään \code{print}-funktion muotoa, joka ei välttämättä muistu mieleen. Jos sille antaa useita arvoja (\code{print(\textit{arvo1}, \textit{arvo2}, ...)}), funktio tulostaa ne välilyönnillä erotettuna. Siispä ohjelman ulostulo on
+
+\begin{output}
+Koordinaatit ovat ( -7 , 4.5 )
+\end{output}
+
+On helppoa nähdä, että näinkin yksinkertaisista luokista voi olla hyötyä koodin siisteyden kannalta. Jos ohjelma käsittelee useita pisteitä, niiden koordinaatit säilyvät kätevästi \code{Piste}-olioiden attribuuteissa eivätkä mene sekaisin keskenään. Pisteitä käsittelevien funktioiden ei tarvitse ottaa argumentteinaan koordinaatteja erikseen, vaan kaikkialla voi pyörittää olioita, jotka niitä säilövät.
+
+\section{Metodit}
+
+\glslink{metodi}{Metodeitakin} aloitteleva Python-ohjelmoija on nähnyt. \code{merkkijono.upper()}, \code{lista.sort()} ja \code{tuple.count(alkio)} ovat kaikki metodikutsuja, joissa kutsutaan olion metodia tietyllä listalla argumentteja (kahdessa niitä on nolla, viimeisessä ainut argumentti on \code{alkio}). Metodeita voi ajatella funktioina, jotka liittyvät olioon: funktion
+
+\code{\textit{funktio}(\textit{olio}, \textit{arg1}, \textit{arg2}, ...)}
+
+voi halutessaan muuttaa metodiksi
+
+\code{\textit{olio}.\textit{metodi}(\textit{arg1}, \textit{arg2}, ...)}
+
+Otetaan käytännön esimerkki. Oletetaan, että \code{Piste}-luokka on määritelty edellisen esimerkin tapaan tyhjäksi luokaksi. Haluamme kirjoittaa funktion, joka laskee kahden pisteen välisen etäisyyden. Googlettamalla tai käymällä lukion matematiikan oppimäärän saa selville, että tätä varten on olemassa pisteille $(x_1,y_1)$ ja $(x_2,y_2)$ kaava $d = \sqrt{(x_1 - x_2)^2 + (y_1 - y_2)^2}$. Pythoniksi muutettuna se näyttää tältä:
+
+\begin{python}
+import math # tarvitaan sqrt-funktioon
+
+def etaisyys(piste1, piste2):
+       dx = piste1.x - piste2.x
+       dy = piste1.y - piste2.y
+       return math.sqrt(dx**2 + dy**2)
+\end{python}
+
+Nyt voisimme laskea pisteiden \code{p1} ja \code{p2} etäisyyden kirjoittamalla \code{etaisyys(p1, p2)}, mutta toteutetaan se saman tien metodilla.
+
+Metodin määrittely muistuttaa hyvin paljon funktion määrittelyä, mutta oleellisin ero on se, että metodi kirjoitetaan sisennettynä luokan sisään attribuutin tavoin. Tässä \code{Piste}-luokan paranneltu määritelmä, jossa on mukana \code{etaisyys}-metodi.
+
+\begin{example}{Luokka metodeilla}
+class Piste:
+       
+       def etaisyys(self, toinen):
+              dx = self.x - toinen.x
+              dy = self.y - toinen.y
+              return math.sqrt(dx**2 + dy**2)
+\end{example}
+
+Metodin ensimmäinen argumentti on olio, jolla metodia kutsutaan. Sille annetaan tavanomaisesti nimeksi \code{self}. Muuta kummallista esimerkissä ei ole: kuten funktiotkin, metodit palauttavat paluuarvon \code{return}-lauseella.
+
+Nyt pisteiden välisiä etäisyyksiä voisi laskea näin:
+
+\begin{python}
+origo = Piste()
+origo.x = 0
+origo.y = 0
+toinen = Piste()
+toinen.x = 1
+toinen.y = 1
+print(origo.etaisyys(toinen))
+\end{python}
+
+Metodin argumentti \code{self} saa siis arvon \code{origo}, joka on olio, jonka metodia kutsutaan, ja argumentti \code{toinen} on \code{Piste}-luokan olio \code{toinen}.
+
+\section{Konstruktori}
+
+Luokille voidaan määritellä tietyn nimisiä metodeita, jotka mahdollistavat erityisiä toimintoja. Yksi tällainen metodi on \glslink{konstruktori}{\textit{konstruktori}}, joka suoritetaan aina silloin, kun uusi olio luodaan. Konstruktorimetodin nimi on \code{\_\_init\_\_}, ja se voi \code{self}-argumentin lisäksi halutessaan ottaa mielivaltaisen määrän argumentteja, jotka on annettava oliota luodessa. Tässä esimerkki \code{Piste}-luokan konstruktorista, joka ottaa olioita luodessa koordinaattien arvot.
+
+\begin{example}{Konstruktori \code{Piste}-luokalle}
+class Piste:
+
+       def __self__(self, x, y):
+              self.x = x
+              self.y = y
+\end{example}
+
+Nyt pisteitä voi kätevästi luoda syntaksilla \code{Piste(\textit{x}, \textit{y})} -- lyhyemmän ja selkeämmän koodin lisäksi enää ei tarvitse huolehtia, että ohjelmoija unohtaa määritellä jonkin oliolle vaadituista attribuuteista. Huomaa, kuinka konstruktorin sisällä \code{x} viittaa konstruktorin argumenttiin \code{x} ja \code{self.x} olion \code{x}-attribuuttiin.
+
+Esimerkkikonstruktori vain asettaa olion attribuutteihin annetut arvot, mutta se on ihan tavallinen metodi, jossa saa tehdä muutakin. Halutessaan tarkastella koodinsa toimintaa voi esimerkiksi tulostaa konstruktorissa viestin, jolloin huomaa aina, kun uusi olio luodaan.
+
+\section{Muita erityisiä metodeita}
+
+Konstruktorin lisäksi on muitakin samalla tavalla nimettyjä metodeita, jotka määrittelemällä saa käyttöön uusia ominaisuuksia luokalle. Tässä taulukoituna tärkeimpiä.
+
+\begin{tabularx}{\textwidth}{ |X|X| }
+\hline
+\textbf{Metodi} & \textbf{Tarkoitus} \\ \hline
+\code{\_\_repr\_\_} & Palauttaa oliota kuvaavan merkkijonon, joka on tavanomaisesti Python-lauseke, jolla sen voisi luoda. Käytetään olion tulostamiseen \\ \hline
+\code{\_\_str\_\_} & Palauttaa oliota kuvaavan käyttäjäystävällisen merkkijonon. Käytetään olion tulostamiseen \\ \hline
+\code{\_\_len\_\_} & Palauttaa olion pituuden. Käytetään, kun kutsutaan funktiota \code{len(\textit{olio})} \\ \hline
+\code{\_\_bool\_\_} & Palauttaa olion totuusarvon. Käytetään, jos olio on \code{if}- tai \code{while}-lauseen ehtona \\ \hline
+\end{tabularx}
+
+Esimerkiksi metodit \code{\_\_repr\_\_} ja \code{\_\_str\_\_} voisi toteuttaa \code{Piste}-luokalle näin:
+
+\begin{python}
+class Piste:
+       # Luokan varsinainen määritelmä
+       
+       def __repr__(self):
+              return "Piste(" + str(self.x) + ", " + str(self.y) + ")"
+
+       def __str__(self):
+              return "(" + str(self.x) + ", " + str(self.y) + ")"
+\end{python}
+
+Nyt \code{Piste}-luokan olioita voi tulostaa.
+
+\begin{python}
+print(Piste(5, 6))
+\end{python}
+
+\begin{output}
+(5, 6)
+\end{output}
+
+Vain \code{\_\_repr\_\_} on välttämätöntä määritellä, sillä jos \code{\_\_str\_\_} puuttuu, sitä käytetään sen sijaan.
+
+\section{Periytys}
+
+Periytys on tapa jakaa koodia usean luokan kesken. Kuvitellaan, että on määritelty luokat \code{Kissa}, \code{Koira} ja \code{Hevonen}. Kaikilla on varmaankin samanlaisia toimintoja -- esimerkiksi nimi ja omistaja -- mutta myös eroavaisuuksia. Kuinka toteuttaa tilanne siten, ettei koodia tarvitse toistaa luokkien välillä?
+
+Ratkaisu löytyy: \gls{periytys}. Periytys on suhde luokkien välillä: jos luokka \code{A} perii luokan \code{B}, sanotaan, että \code{A} on \code{B}:n alaluokka ja \code{B} \code{A}:n yläluokka. Luokalla on kaikki sen yläluokkien attribuutit ja metodit. Jos \code{Kissa} on \code{Eläin}-luokan alaluokka, kaiken sen, mitä voi \code{Eläin}-olioille tehdä, toimii myös \code{Kissa}-olioille.
+
+Tämän lisäksi alaluokat voivat \glslink{yliajaminen}{\textit{yliajaa}} yläluokkien metodeita. Jos ala- ja yläluokka määrittelevät saman metodin, alaluokan metodi voittaa, kun päätetään, mitä olio käyttää. Selventävän esimerkin aika.
+
+\begin{example}{Yksinkertainen periytys}
+class Elain:
+
+       def __init__(self, nimi, omistaja):
+              self.nimi = nimi
+              self.omistaja = omistaja
+
+       def aantele(self):
+              print("<epämääräisiä ääniä>")
+
+class Kissa(Elain):
+
+       def aantele(self):
+              print("Miau!")
+
+kissa = Kissa("Maru", "maruhanamogu") # Kutsutaan yläluokan konstruktoria
+print(kissa.nimi) # Yläluokan attribuutti toimii
+kissa.aantele() # Kutsutaan alaluokan metodia
+\end{example}
+
+Ohjelma tulostaa
+
+\begin{output}
+Maru
+Miau!
+\end{output}
+
+Tarkastellaanpa esimerkkiä tarkemmin. \code{Kissa}-eläin määritellään syntaksilla \code{class Kissa(Elain):}; yläluokka laitetaan suluissa luokan nimen jälkeen. Periä voi myös useampia luokkia erottamalla ne pilkuilla: \code{class \textit{Alaluokka}(\textit{Yläluokka1}, \textit{Yläluokka2}, \textit{Yläluokka3}, ...)}
+
+Attribuutti \code{nimi} määritellään \code{Elain}-luokassa, mutta sitä voi käyttää automaattisesti alaluokassa. \code{aantele()}-metodi on määritelty kummassakin, mutta alaluokan toteutus yliajaa yliluokan, joten \code{kissa} tulostaa metodia kutsuttaessa \code{Miau!}, ei \code{<epämääräisiä ääniä>}
+
+\section{Tehtäviä}
+
+\begin{enumerate}[\thesection .1]
+
+\item Selitä lyhyesti käsite...
+\begin{enumerate}
+\item ... luokka
+\item ... olio
+\item ... konstruktori
+\item ... attribuutti
+\end{enumerate}
+
+\item Muokkaa esimerkkien \code{Piste}-luokkaa.
+\begin{enumerate}
+\item Lisää metodi \code{keskipiste}, joka laskee pisteen ja argumenttipisteen keskipisteen.
+\item Lisää metodi \code{siirra}, joka asettaa pisteen koordinaateille uudet arvot.
+\item Lisää metodi \code{lahinpiste}, joka käy läpi argumenttina annetun listan pisteitä ja palauttaa lähimmän pisteen.
+\end{enumerate}
+
+\item Muokkaa \code{Elain}-esimerkkiä.
+\begin{enumerate}
+\item Lisää \code{Elain}-luokan perivä alaluokka \code{Koira}, joka yliajaa \code{aantele}-metodin sopivasti.
+\item Muokkaa luokkahierarkiaa siten, että \code{omistaja}-attribuutti onkin \code{Elain}-luokan alaluokalla \code{Lemmikki}. \code{Kissa} ja \code{Koira} ovat \code{Lemmikki}-luokan alaluokkia.
+\item Kokeile, mitä tapahtuu, jos luokka \code{OutoElain} perii sekä luokan \code{Kissa} että luokan \code{Koira}. Mitä tapahtuu, jos sen \code{aantele()}-metodia kutsuu?
+\end{enumerate}
+
+\item Tee \code{Tuote}-luokka, jolla on attribuutit \code{nimi}, \code{hinta} ja \code{alennusprosentti}. Tee sille metodi \code{todellinenHinta()}, joka laskee todellisen hinnan. Talleta listaan erilaisia \code{Tuote}-olioita (joillakin täytyy olla sama nimi). Tee ohjelma, joka kysyy käyttäjältä tuotteen nimiä ja tulostaa halvimman nimeen täsmäävän tuotteen tiedot. Vinkki: määrittele tuotteelle metodi \code{\_\_repr\_\_()}, jotta voit tulostaa sen helposti.
+
+\end{enumerate}
